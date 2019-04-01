@@ -3,7 +3,6 @@ import BackgroundController from './BackgroundController';
 
 class Background extends Component {
 	componentDidMount() {
-    overwolf.log.info("background did mount");
 		BackgroundController.run();
 	}
 

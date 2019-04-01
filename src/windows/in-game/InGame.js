@@ -166,7 +166,21 @@ class InGame extends Component {
 				{
 					//<img src={this.state.imgSrc} width="100%" height="100%"></img>
 				}
-				<Heatmap mapUrl={this.state.mapUrl}></Heatmap>
+        <Navbar fixed="top" bg="light">
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="mr-auto">
+              <Nav.Link eventKey="erangel" onSelect={this.onMapSelect}>Erangel</Nav.Link>
+              <Nav.Link eventKey="miramar" onSelect={this.onMapSelect}>Miramar</Nav.Link>
+              <Nav.Link eventKey="sanhok" onSelect={this.onMapSelect}>Sanhok</Nav.Link>
+              <Nav.Link eventKey="vikendi" onSelect={this.onMapSelect}>Vikendi</Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Navbar>
+        {
+          this.state.mapUrl != "" ? (
+            <Heatmap mapUrl={this.state.mapUrl}></Heatmap>
+          ) : null
+        }
       </div>
     );
   }
