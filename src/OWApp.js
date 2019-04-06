@@ -23,23 +23,18 @@ class App extends Component {
 	}
 
   render() {
-		overwolf.log.info("rendering the OW App...");
 		const windowName = this.state.currentWindowName;
-		overwolf.log.info("current window name: " + windowName);
 		let window;
 		let body = document.getElementsByTagName('body')[0]
 		switch (windowName) {
 			case 'background':
-				overwolf.log.info("Background");
 				window = <Background />
 				break;
 			case 'settings':
-				overwolf.log.info("Settings");
 				window = <Settings />
 				body.className = 'settings'
 				break;
 			case 'ingame':
-				overwolf.log.info("In-Game");
 				window = <InGame />
 				body.className = 'in-game'
 				break;

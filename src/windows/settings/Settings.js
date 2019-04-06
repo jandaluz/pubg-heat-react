@@ -22,12 +22,13 @@ class Settings extends Component {
 	async _updateHotkeys() {
 		let toggleHotkey = await HotkeysService.getToggleHotkey();
 		let screenshotHotkey = await HotkeysService.getTakeScreenshotHotkey();
+		let heatmapHotkey = await HotkeysService.getToggleHotkey();
 		this.updateToggle(toggleHotkey);
 		this.updateScreenshot(screenshotHotkey);
+		this.updateHeatmap(heatmapHotkey);
 	}
 
 	async componentDidMount() {
-		overwolf.log.info('settings did mount');
 		try {
 			await this._updateHotkeys();
 		} catch (e) {

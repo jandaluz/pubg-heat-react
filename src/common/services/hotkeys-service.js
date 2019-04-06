@@ -65,5 +65,6 @@ export default {
 	getToggleHotkey,
 	setTakeScreenshotHotkey,
 	addHotkeyChangeListener,
-	setHeatMapHotkey
+	setHeatMapHotkey,
+	getHeatMapHotkey,
 };

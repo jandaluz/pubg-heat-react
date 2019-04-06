@@ -27,7 +27,6 @@ class InGame extends Component {
 	}
 
 	componentDidMount() {
-		overwolf.log.info('ingame did mount');
 		let mainWindow = overwolf.windows.getMainWindow();
 		mainWindow.ow_eventBus.addListener(this._eventListener);
 
@@ -44,7 +43,6 @@ class InGame extends Component {
 				break;
 			}
 			case 'heatmap': {
-				overwolf.log.info("hetmap");
 				if(!this.state.mapShow) {
 					const url = this.getMapImage('erangel');
 					console.log("heatmap");
@@ -58,6 +56,7 @@ class InGame extends Component {
 						mapShow: false
 					});
 				}
+				break;
 			}
 			default:
 				break;
@@ -70,16 +69,13 @@ class InGame extends Component {
 	}
 
 	_updateHeatmap(url) {
-		overwolf.log.info('show ingame window')
 		WindowsService.restore(WindowNames.IN_GAME);
-		overwolf.log.info('set mapUrl state to ' + url)
 		this.setState({
 			mapUrl: url
 		});
 	}
 
 	_hideHeatmap() {
-		overwolf.log.info('close heatmap window');
 		WindowsService.minimize(WindowNames.IN_GAME);
 	}
 
@@ -93,7 +89,6 @@ class InGame extends Component {
 
 	getMapImage = (mapName) => {
 		console.log(mapName)
-		overwolf.log.info(mapName)
 		switch(mapName) {
 		  default:
 			return "https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Erangel_heat.png"
@@ -163,24 +158,10 @@ class InGame extends Component {
 					</div>
 				</header>
 
-				{
-					//<img src={this.state.imgSrc} width="100%" height="100%"></img>
-				}
-        <Navbar fixed="top" bg="light">
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
-              <Nav.Link eventKey="erangel" onSelect={this.onMapSelect}>Erangel</Nav.Link>
-              <Nav.Link eventKey="miramar" onSelect={this.onMapSelect}>Miramar</Nav.Link>
-              <Nav.Link eventKey="sanhok" onSelect={this.onMapSelect}>Sanhok</Nav.Link>
-              <Nav.Link eventKey="vikendi" onSelect={this.onMapSelect}>Vikendi</Nav.Link>
-            </Nav>
-          </Navbar.Collapse>
-        </Navbar>
-        {
-          this.state.mapUrl != "" ? (
-            <Heatmap mapUrl={this.state.mapUrl}></Heatmap>
-          ) : null
-        }
+				
+				<img src={this.state.imgSrc} width="100%" height="100%"></img>
+				
+
       </div>
     );
   }

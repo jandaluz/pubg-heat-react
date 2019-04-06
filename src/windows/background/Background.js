@@ -3,6 +3,7 @@ import BackgroundController from './BackgroundController';
 
 class Background extends Component {
 	componentDidMount() {
+    console.log("background did mount")
 		BackgroundController.run();
 	}
 

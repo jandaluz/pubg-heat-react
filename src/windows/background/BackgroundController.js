@@ -19,6 +19,8 @@ class BackgroundController {
 		WindowsService.restore(startupWindow);
 
 		let isGameRunning = RunningGameService.isGameRunning();
+		overwolf.log.info('isGameRunning? ' + isGameRunning)
+		console.log(isGameRunning);
 		if (isGameRunning) {
 			GEPService.registerToGEP();
 			await WindowsService.restore(WindowNames.IN_GAME);
