@@ -10,6 +10,7 @@ import EventBus from '../../common/services/event-bus';
 
 class BackgroundController {
 	static async run() {
+		overwolf.log.info("Launching background controller...")
 		window.ow_eventBus = EventBus;
 
 		BackgroundController._registerAppLaunchTriggerHandler();

@@ -11,10 +11,11 @@
     "react-scripts": "2.1.8"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "node scripts/start.js",
+    "reload": "nodemon --watch src -e .jsx,.css --ignore build/ --exec npm run build",
+    "watch": "concurrently npm:start npm:reload",
+    "build": "set PUBLIC_URL=./&& react-scripts build",
+    "test": "node scripts/test.js"
   },
   "eslintConfig": {
     "extends": "react-app"
