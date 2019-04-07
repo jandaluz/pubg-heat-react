@@ -22,7 +22,7 @@ class Settings extends Component {
 	async _updateHotkeys() {
 		let toggleHotkey = await HotkeysService.getToggleHotkey();
 		let screenshotHotkey = await HotkeysService.getTakeScreenshotHotkey();
-		let heatmapHotkey = await HotkeysService.getToggleHotkey();
+		let heatmapHotkey = await HotkeysService.getHeatMapHotkey();
 		this.updateToggle(toggleHotkey);
 		this.updateScreenshot(screenshotHotkey);
 		this.updateHeatmap(heatmapHotkey);
@@ -90,7 +90,7 @@ class Settings extends Component {
 				<main>
 					<div><span>Toggle:&nbsp;</span><kbd id="toggle">{this.state.toggleText}</kbd></div>
 					<div><span>Take a screentshot:&nbsp;</span><kbd id="screenshot">{this.state.screenshotText}</kbd></div>
-					<div><span>Show heatmaps&nbsp;</span><kdb id="heatmap">{this.state.heatmapText}</kdb></div>
+					<div><span>Show heatmaps&nbsp;</span><kbd id="heatmap">{this.state.heatmapText}</kbd></div>
 				</main>
 
       </div>

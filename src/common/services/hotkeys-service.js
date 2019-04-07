@@ -42,7 +42,7 @@ function getToggleHotkey() {
 
 function getHeatMapHotkey() {
 	return new Promise(( resolve, reject) => {
-		_getHotkey(HOTKEYS.TOGGLE, function(result) {
+		_getHotkey(HOTKEYS.SHOW_HEATMAP, function(result) {
 			resolve(result);
 		});
 	});
