@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 //import Erangel from './components/erangel/Erangel'
@@ -22,38 +18,39 @@ class App extends Component {
       playerPositionY: 0,
       mapUrl: "",
       mapName: '',
-      phase: 'airfiled',
+      phase: 'lobby',
     }
   }
   componentDidMount() {
-    this.onMapSelect("erangel");
+    //this.onMapSelect("erangel");
     this.readTheCsv();
   }
   render() {
     return (
 
-      <div className="App" style={{height: "1098px"}}>
+      <div className="App" style={{ height: "1098px" }}>
 
-      { 
-        this.state.phase === "lobby" ?
-              <Navbar fixed="top" bg="dark" variant="dark">
-                <Navbar.Collapse id="basic-navbar-nav">
-                  <Nav className="mr-auto">
-                    <Nav.Link eventKey="erangel" onSelect={this.onMapSelect}>Erangel</Nav.Link>
-                    <Nav.Link eventKey="miramar" onSelect={this.onMapSelect}>Miramar</Nav.Link>
-                    <Nav.Link eventKey="sanhok" onSelect={this.onMapSelect}>Sanhok</Nav.Link>
-                    <Nav.Link eventKey="vikendi" onSelect={this.onMapSelect}>Vikendi</Nav.Link>
-                  </Nav>
-                </Navbar.Collapse>
-              </Navbar>
-          : null
+        {
+          this.state.phase === "lobby" ?
+            <Navbar fixed="top" bg="dark" variant="dark">
+              <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="mr-auto">
+                  <Nav.Link eventKey="erangel" onSelect={this.onMapSelect}>Erangel</Nav.Link>
+                  <Nav.Link eventKey="miramar" onSelect={this.onMapSelect}>Miramar</Nav.Link>
+                  <Nav.Link eventKey="sanhok" onSelect={this.onMapSelect}>Sanhok</Nav.Link>
+                  <Nav.Link eventKey="vikendi" onSelect={this.onMapSelect}>Vikendi</Nav.Link>
+                </Nav>
+              </Navbar.Collapse>
+            </Navbar>
+            : null
         }
 
-          {
-            this.state.mapUrl != "" ? (
-                  <Map mapClass={["bg", this.state.mapName]}></Map>
-            ) : null
-          }
+        {
+          this.state.mapUrl !== "" ? (
+            <Map mapClass={["bg", this.state.mapName]}></Map>
+          ) : null
+        }
+        <div id="d3-svg"></div>
       </div>
     );
   }
@@ -93,22 +90,87 @@ class App extends Component {
   }
 
   readTheCsv = () => {
-    d3.csv("data/landings.csv").then( (data) => {
-      console.log(data);
-      const landingCoords = data.map( (data) => {
-        return [data.landing_x, data.landing_y];
-      })
+
+    let height = 1098;
+    let width = 1098;
+    var svg = d3.select("#d3-svg")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .append("g")
+
+    d3.csv("data/erangel.1.csv").then((data) => {
+      const landingCoords = data.map((data) => {
+        return {
+          "x": (+data.landing_x) / 100,
+          "y": (+data.landing_y) / 100
+        }
+      });
       console.log(landingCoords)
+
+      var xScale = d3.scaleLinear()
+        .domain([0, 8160])
+        .range([0, width]);
+      var yScale = d3.scaleLinear()
+        .domain([0, 8160])
+        .range([0, height])
+
       let contours = d3contours.contourDensity()
-        .size([816000,816000])
-        .x( (d) => {
-          return d[0];
+        .x((d) => {
+          return xScale(d.x);
         })
-        .y( (d) => {
-          return d[1];
+        .y((d) => {
+          return yScale(d.y);
         })
-        .cellSize(10);
+        .size([8160, 8160])
+        .cellSize(8)
+        (landingCoords);
+
       console.log(contours)
+      // Prepare a color palette
+
+      var myColor = d3.scaleSequential()
+        .interpolator(d3.interpolateYlOrRd)
+        .domain([0.1, 0])
+
+
+
+      var myimage = svg.append('image')
+        .attr('xlink:href', 'https://github.com/pubg/api-assets/raw/master/Assets/Maps/Erangel_Main_Low_Res.png')
+        .attr('width', 1098)
+        .attr('height', 1098)
+
+      console.log(myimage);
+
+
+      // Circles
+      /**
+      var circles = svg.selectAll('circle')
+        .data(landingCoords)
+        .enter()
+        .append('circle')
+        .attr('cx', function (d) { return xScale(d.x) })
+        .attr('cy', function (d) { return yScale(d.y) })
+        .attr('r', '2')
+        .attr('stroke', 'black')
+        .attr('stroke-width', 1)
+        .attr('fill', function (d, i) { return i })
+        .on('mouseover', function () {
+          d3.select(this)
+            .transition()
+            .duration(500)
+            .attr('r', 4)
+            .attr('stroke-width', 3)
+        })
+      **/
+      svg.insert("g")
+        .selectAll("path")
+        .data(contours)
+        .join("path")
+        .attr("d", d3.geoPath())
+        .attr("fill", function (d) { return myColor(d.value); })
+        .attr("class", "contour")
+
       this.setState({
         data: data
       });

@@ -13,6 +13,13 @@ body, html {
   background-size: 100%;  
 }
 
+path {
+  fill-opacity: .5;
+  stroke: #000;
+  stroke-opacity: .6;
+  stroke-width: .1px;  
+}
+
 .erangel {
   background-image: url("https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Erangel_heat.png")
 }
@@ -29,32 +36,6 @@ body, html {
   background-image: url("https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Vikendi_heat.png")
 }
 
-.App {
-  text-align: center;
-  height:100%
-}
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -62,4 +43,17 @@ body, html {
   to {
     transform: rotate(360deg);
   }
+}
+
+@keyframes pulse {
+  0% {
+    background-color: #001F3F;
+  }
+  100% {
+    background-color: #FF4136;
+  }
+}
+
+.contour {
+    animation: pulse 5s infinite;
 }
