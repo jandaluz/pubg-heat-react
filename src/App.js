@@ -3,7 +3,7 @@ import './App.css';
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 //import Erangel from './components/erangel/Erangel'
-import Map from './components/map/Map';
+import HeatMap from './components/map/HeatMap';
 import * as d3 from "d3"
 import * as d3contours from "d3-contour"
 
@@ -16,15 +16,12 @@ class App extends Component {
     this.state = {
       playerPositionX: 0,
       playerPositionY: 0,
-      mapUrl: "",
-      mapName: '',
       phase: 'lobby',
+      mapName: '',
+      mapUrl: '',
     }
   }
-  componentDidMount() {
-    //this.onMapSelect("erangel");
-    this.readTheCsv();
-  }
+
   render() {
     return (
 
@@ -44,137 +41,63 @@ class App extends Component {
             </Navbar>
             : null
         }
-
-        {
-          this.state.mapUrl !== "" ? (
-            <Map mapClass={["bg", this.state.mapName]}></Map>
-          ) : null
+        { this.state.mapName !== '' ?
+          <HeatMap
+            mapName={this.state.mapName}
+            mapUrl={this.state.mapUrlHighRes}
+            rangeX={1098}
+            rangeY={1098}
+            domainX={this.state.domainX}
+            domainY={this.state.domainY}>
+          </HeatMap>
+          : null
         }
-        <div id="d3-svg"></div>
-      </div>
-    );
-  }
+    </div>
+
+    )};
 
   onMapSelect = (eventKey, event) => {
     console.log(eventKey)
-    this.setState({
-      mapName: eventKey
-    });
     switch (eventKey) {
       case "erangel":
         this.setState({
-          "mapUrl": "https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Erangel_heat.png"
+          "mapName": "Erangel_Main",
+          "mapUrlLowRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Erangel_Main_Low_Res.png",
+          "mapUrlHighRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Erangel_Main_High_Res.png",
+          "domainX": 816000,
+          "domainY": 816000,
         });
         break;
       case "miramar":
         this.setState({
-          "mapUrl": "https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Miramar_heat.png"
+          "mapName": "Desert_Main",
+          "mapUrlLowRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Miramar_Main_Low_Res.png",
+          "mapUrlHighRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Miramar_Main_High_Res.png",
+          "domainX": 816000,
+          "domainY": 816000,
         });
         break;
       case "sanhok":
         this.setState({
-          "mapUrl": "https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Sanhok_heat.png"
+          "mapName": "Savage_Main",
+          "mapUrlLowRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Sanhok_Main_Low_Res.png",
+          "mapUrlHighRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Sanhok_Main_High_Res.png",
+          "domainX": 408000,
+          "domainY": 408000,
         });
         break;
       case "vikendi":
         this.setState({
-          "mapUrl": "https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Vikendi_heat.png"
+          "mapName": "DihorOtok_Main",
+          "mapUrlLowRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Vikendi_Main_Low_Res.png",
+          "mapUrlHighRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Vikendi_Main_High_Res.png",
+          "domainX": 612000,
+          "domainY": 612000,
         });
         break;
       default:
-        this.setState({
-          "mapUrl": ""
-        });
         break;
     }
-  }
-
-  readTheCsv = () => {
-
-    let height = 1098;
-    let width = 1098;
-    var svg = d3.select("#d3-svg")
-      .append("svg")
-      .attr("width", width)
-      .attr("height", height)
-      .append("g")
-
-    d3.csv("data/erangel.1.csv").then((data) => {
-      const landingCoords = data.map((data) => {
-        return {
-          "x": (+data.landing_x) / 100,
-          "y": (+data.landing_y) / 100
-        }
-      });
-      console.log(landingCoords)
-
-      var xScale = d3.scaleLinear()
-        .domain([0, 8160])
-        .range([0, width]);
-      var yScale = d3.scaleLinear()
-        .domain([0, 8160])
-        .range([0, height])
-
-      let contours = d3contours.contourDensity()
-        .x((d) => {
-          return xScale(d.x);
-        })
-        .y((d) => {
-          return yScale(d.y);
-        })
-        .size([8160, 8160])
-        .cellSize(8)
-        (landingCoords);
-
-      console.log(contours)
-      // Prepare a color palette
-
-      var myColor = d3.scaleSequential()
-        .interpolator(d3.interpolateYlOrRd)
-        .domain([0.1, 0])
-
-
-
-      var myimage = svg.append('image')
-        .attr('xlink:href', 'https://github.com/pubg/api-assets/raw/master/Assets/Maps/Erangel_Main_Low_Res.png')
-        .attr('width', 1098)
-        .attr('height', 1098)
-
-      console.log(myimage);
-
-
-      // Circles
-      /**
-      var circles = svg.selectAll('circle')
-        .data(landingCoords)
-        .enter()
-        .append('circle')
-        .attr('cx', function (d) { return xScale(d.x) })
-        .attr('cy', function (d) { return yScale(d.y) })
-        .attr('r', '2')
-        .attr('stroke', 'black')
-        .attr('stroke-width', 1)
-        .attr('fill', function (d, i) { return i })
-        .on('mouseover', function () {
-          d3.select(this)
-            .transition()
-            .duration(500)
-            .attr('r', 4)
-            .attr('stroke-width', 3)
-        })
-      **/
-      svg.insert("g")
-        .selectAll("path")
-        .data(contours)
-        .join("path")
-        .attr("d", d3.geoPath())
-        .attr("fill", function (d) { return myColor(d.value); })
-        .attr("class", "contour")
-
-      this.setState({
-        data: data
-      });
-    });
   }
 }
 

@@ -54,6 +54,29 @@ path {
   }
 }
 
+@keyframes flickerAnimation {
+  0%   { opacity:.2; }
+  50%  { opacity:0.02; }
+  100% { opacity:.2; }
+}
+@-o-keyframes flickerAnimation{
+  0%   { opacity:.2; }
+  50%  { opacity:0.02; }
+  100% { opacity:.2; }
+}
+@-moz-keyframes flickerAnimation{
+  0%   { opacity:.2; }
+  50%  { opacity:0.02; }
+  100% { opacity:.2; }
+}
+@-webkit-keyframes flickerAnimation{
+  0%   { opacity:.2; }
+  50%  { opacity:0.02; }
+  100% { opacity:.2; }
+}
 .contour {
-    animation: pulse 5s infinite;
+   -webkit-animation: flickerAnimation 5s infinite;
+   -moz-animation: flickerAnimation 5s infinite;
+   -o-animation: flickerAnimation 5s infinite;
+    animation: flickerAnimation 5s infinite;
 }
