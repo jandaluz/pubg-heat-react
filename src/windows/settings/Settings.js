@@ -20,9 +20,11 @@ class Settings extends Component {
 	}
 
 	async _updateHotkeys() {
+		console.log('update hotkeys')
 		let toggleHotkey = await HotkeysService.getToggleHotkey();
 		let screenshotHotkey = await HotkeysService.getTakeScreenshotHotkey();
 		let heatmapHotkey = await HotkeysService.getHeatMapHotkey();
+		console.log(heatmapHotkey)
 		this.updateToggle(toggleHotkey);
 		this.updateScreenshot(screenshotHotkey);
 		this.updateHeatmap(heatmapHotkey);

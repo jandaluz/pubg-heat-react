@@ -8,6 +8,7 @@ import '../../common/style.css';
 import Heatmap from '../../components/map/Map';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
+import '../../App.css';
 
 class InGame extends Component {
 	constructor(props) {
@@ -19,7 +20,9 @@ class InGame extends Component {
 		this.state = {
 			imgSrc: null,
 			mapUrl: 'https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Erangel_heat.png',
-			mapShow: false,
+			mapShow: true,
+			phase: "lobby",
+			mapName: ""
 		}
 
 		this._eventListener = this._eventListener.bind(this);
@@ -34,6 +37,11 @@ class InGame extends Component {
 		overwolf.windows.getCurrentWindow(result => {
 			this._dragService = new DragService(result.window, this._headerRef.current)
 		})
+		let resolution = "1098px";
+		this.setState({
+			mapName: "erangel",
+			mapHeight: "1098px",
+		})
 	}
 
 	_eventListener(eventName, data) {
@@ -43,12 +51,17 @@ class InGame extends Component {
 				break;
 			}
 			case 'heatmap': {
-				if(!this.state.mapShow) {
+				if (!this.state.mapShow) {
+
 					const url = this.getMapImage('erangel');
 					console.log("heatmap");
 					this._updateHeatmap(url);
-					this.setState({
-						mapShow: true
+					overwolf.games.events.getInfo( (info) => {
+						const phase = info.res.game_info.phase;
+						this.setState({
+							mapShow: true,
+							phase: phase
+						})
 					});
 				} else {
 					this._hideHeatmap();
@@ -89,57 +102,33 @@ class InGame extends Component {
 
 	getMapImage = (mapName) => {
 		console.log(mapName)
-		switch(mapName) {
-		  default:
-			return "https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Erangel_heat.png"
+		switch (mapName) {
+			default:
+				return "https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Erangel_heat.png"
 		}
 	}
 
 
-	onMapSelect = (eventKey,event) => {
+	onMapSelect = (eventKey, event) => {
 		console.log(eventKey)
-		switch(eventKey) {
-		  case "erangel":
-			this.setState({
-			  "mapUrl": "https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Erangel_heat.png"
-			});
-			break;
-		  case "miramar":
-			this.setState({
-			  "mapUrl": "https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Miramar_heat.png"
-			});
-			break;
-		  case "sanhok":
-			this.setState({
-			  "mapUrl": "https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Sanhok_heat.png"
-			});
-			break;
-		  case "vikendi":
-			this.setState({
-			  "mapUrl": "https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Vikendi_heat.png"
-			});
-			break;
-		  default:
-			this.setState({
-			  "mapUrl": ""
-			});
-			break;
-		}
+		this.setState({
+			mapName: eventKey
+		});
 	}
 
-  render() {
-    return (
-      <div className="in-game">
+	render() {
+		return (
+			<div style={{height: this.state.mapHeight}}>
 				<svg xmlns='http://www.w3.org/2000/svg' display='none'>
 					<symbol id='window-control_close' viewBox='0 0 30 30'>
 						<line x1='19.5' y1='10.5' x2='10.5' y2='19.5' fill='none' stroke='currentcolor'
-						strokeLinecap='round' />
+							strokeLinecap='round' />
 						<line x1='10.5' y1='10.5' x2='19.5' y2='19.5' fill='none' stroke='currentcolor'
-						strokeLinecap='round' />
+							strokeLinecap='round' />
 					</symbol>
 					<symbol id='window-control_settings' viewBox='0 0 30 30'>
 						<path d='M22,16.3V13.7H19.81a4.94,4.94,0,0,0-.49-1.18L20.87,11,19,9.13l-1.55,1.55a5,5,0,0,0-1.18-.49V8H13.7v2.19a5,5,0,0,0-1.18.49L11,9.13,9.13,11l1.55,1.55a5,5,0,0,0-.49,1.18H8v2.6h2.19a5,5,0,0,0,.49,1.18L9.13,19,11,20.87l1.55-1.55a4.94,4.94,0,0,0,1.18.49V22h2.6V19.81a4.94,4.94,0,0,0,1.18-.49L19,20.87,20.87,19l-1.55-1.55a4.94,4.94,0,0,0,.49-1.18Zm-7,1.45A2.75,2.75,0,1,1,17.75,15,2.75,2.75,0,0,1,15,17.75Z'
-						fill='currentcolor' />
+							fill='currentcolor' />
 					</symbol>
 				</svg>
 
@@ -158,27 +147,45 @@ class InGame extends Component {
 					</div>
 				</header>
 
-				
-        <Navbar fixed="top" bg="light">
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
-              <Nav.Link eventKey="erangel" onSelect={this.onMapSelect}>Erangel</Nav.Link>
-              <Nav.Link eventKey="miramar" onSelect={this.onMapSelect}>Miramar</Nav.Link>
-              <Nav.Link eventKey="sanhok" onSelect={this.onMapSelect}>Sanhok</Nav.Link>
-              <Nav.Link eventKey="vikendi" onSelect={this.onMapSelect}>Vikendi</Nav.Link>
-            </Nav>
-          </Navbar.Collapse>
-        </Navbar>
-        {
-          this.state.mapUrl != "" ? (
-            <Heatmap mapUrl={this.state.mapUrl}></Heatmap>
-          ) : null
-        }
-				
+				{ this.state.phase == "lobby" ?
 
-      </div>
-    );
-  }
+				<Navbar position="absolute" bg="#343a40" variant="dark">
+					<Navbar.Collapse id="basic-navbar-nav">
+						<Nav className="mr-auto" defaultActiveKey="erangel" >
+							<Nav.Link eventKey="erangel" onSelect={this.onMapSelect} style={{ "color": "#F2A900" }}>Erangel</Nav.Link>
+							<Nav.Link eventKey="miramar" onSelect={this.onMapSelect} style={{ "color": "#F2A900" }}>Miramar</Nav.Link>
+							<Nav.Link eventKey="sanhok" onSelect={this.onMapSelect} style={{ "color": "#F2A900" }}>Sanhok</Nav.Link>
+							<Nav.Link eventKey="vikendi" onSelect={this.onMapSelect} style={{ "color": "#F2A900" }}>Vikendi</Nav.Link>
+						</Nav>
+					</Navbar.Collapse>
+					<Navbar.Collapse className="justify-content-end">
+						<Nav>
+							<header className="app-header" ref={this._headerRef}>
+								<div >
+									<button className="icon window-control" id="settingsButton" onClick={this.onSettingsClicked}>
+										<svg>
+											<use xlinkHref="#window-control_settings" />
+										</svg>
+									</button>
+									<button className="icon window-control window-control-close" id="closeButton" onClick={this.onCloseClicked}>
+										<svg>
+											<use xlinkHref="#window-control_close" />
+										</svg>
+									</button>
+								</div>
+							</header>
+						</Nav>
+
+					</Navbar.Collapse>
+				</Navbar>
+				: null
+				}
+				<Heatmap mapClass={["bg", this.state.mapName]}></Heatmap>
+
+
+			</div>
+		);
+	}
 }
 
 export default InGame;

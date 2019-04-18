@@ -1,5 +1,48 @@
+body, html {
+  height: 1098px;
+  margin: 0;
+}
+
+.in-game .map {
+  height: 1098px;
+}
+
+.bg {
+  /* Full height */
+  height: 100%; 
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 150%;  
+}
+
+path {
+  fill-opacity: .6;
+  stroke: #000;
+  stroke-opacity: .6;
+  stroke-width: .5px;  
+}
+
+.erangel {
+  background-image: url("https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Erangel_heat.png")
+}
+
+.miramar {
+  background-image: url("https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Miramar_heat.png")
+}
+
+.sanhok {
+  background-image: url("https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Sanhok_heat.png")
+}
+
+.vikendi {
+  background-image: url("https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Vikendi_heat.png")
+}
+
 .App {
   text-align: center;
+  height: 100%;
 }
 
 .App-logo {

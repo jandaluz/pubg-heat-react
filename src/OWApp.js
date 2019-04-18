@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import Background from './windows/background/Background';
 import Settings from './windows/settings/Settings';
 import InGame from './windows/in-game/InGame';
+import './App.css'
 
 class App extends Component {
 	constructor(props) {
@@ -35,7 +36,7 @@ class App extends Component {
 				body.className = 'settings'
 				break;
 			case 'ingame':
-				window = <InGame />
+				window = <InGame className="map"/>
 				body.className = 'in-game'
 				break;
 		}
