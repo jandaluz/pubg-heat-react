@@ -10,6 +10,8 @@ class HeatMap extends Component {
       "mapUrl": props.mapUrl,
       "rangeX": props.rangeX,
       "rangeY": props.rangeY,
+      "domainX": props.domainX,
+      "domainY": props.domainY,
     };
   }
   render = () => (
@@ -26,11 +28,14 @@ class HeatMap extends Component {
   componentDidUpdate = (prevProps, prevState, snapshot) => {
     if (prevProps.mapName !== this.props.mapName &&
       prevProps.mapUrl !== this.props.mapUrl) {
-      console.log(this.props.mapName);
-      console.log(this.props.mapUrl);
+      console.log(this.props);
       this.setState({
         "mapName": this.props.mapName,
         "mapUrl": this.props.mapUrl,
+        "domainX": this.props.domainX,
+        "domainY": this.props.domainY,
+        "rangeX": this.props.rangeX,
+        "rangeY" :this.props.rangeY
       });
       this.loadTheMap();
       return true;
@@ -49,8 +54,8 @@ class HeatMap extends Component {
   }
   readTheCsv = () => {
 
-    let height = 1098;
-    let width = 1098;
+    let height = this.state.rangeY;
+    let width = this.state.rangeX;
     var svg = d3.select("#d3-svg")
       .append("svg")
       .attr("width", width)
@@ -70,11 +75,11 @@ class HeatMap extends Component {
       console.log(landingCoords)
 
       var xScale = d3.scaleLinear()
-        .domain([0, 8160])
-        .range([0, this.state.rangeX]);
+        .domain([0, (+this.state.domainX)/100])
+        .range([0, width]);
       var yScale = d3.scaleLinear()
-        .domain([0, 8160])
-        .range([0, this.state.rangeY])
+        .domain([0, (+this.state.domainY)/100])
+        .range([0, height])
 
       if (landingCoords.length > 0) {
         let contours = d3contours.contourDensity()
@@ -84,7 +89,7 @@ class HeatMap extends Component {
           .y((d) => {
             return yScale(d.y);
           })
-          .size([8160, 8160])
+          .size([this.state.domainX/100, this.state.domainY/100])
           .cellSize(8)
           (landingCoords);
 
@@ -103,8 +108,8 @@ class HeatMap extends Component {
 
         var myimage = svg.append('image')
           .attr('xlink:href', this.state.mapUrl)
-          .attr('width', this.state.rangeX)
-          .attr('height', this.state.rangeY)
+          .attr('width', width)
+          .attr('height', height)
         console.log("img");
         console.log(myimage);
 
