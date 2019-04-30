@@ -34,15 +34,10 @@
         "action-type": "toggle",
         "default": "Ctrl+F"
       },
-      "pubg_devchallenge_screenshot": {
-        "title": "Take Screenshot",
-        "action-type": "custom",
-        "default": "Ctrl+R"
-      },
       "pubg_devchallenge_heatmap": {
         "title": "Overlay Heat",
         "action-type": "custom",
-        "default": "Ctrl+M"
+        "default": "Ctrl+R"
       }
     },
     "game_events": [10906],
@@ -78,16 +73,17 @@
       },
       "ingame": {
         "file": "build/index.html",
-        "transparent": true,
+        "transparent": false,
         "resizable": false,
         "size": {
-          "width": 620,
-          "height": 600
+          "width": 1098,
+          "height": 1098
         },
         "min_size": {
           "width": 620,
           "height": 600
-        }
+        },
+        "clickthrough": false
       }
     },
     "externally_connectable": {
@@ -96,7 +92,8 @@
         "https://*.overwolf.com",
         "https://*.google-analytics.com",
         "http://*.google-analytics.com",
-        "https://www.googleapis.com"
+        "https://*.googleapis.com",
+        "https://raw.githubusercontent.com"
       ]
     }
   }
