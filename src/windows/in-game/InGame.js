@@ -19,8 +19,8 @@ class InGame extends Component {
 
 		this.state = {
 			imgSrc: null,
-			mapUrl: 'https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Erangel_heat.png',
-			mapShow: true,
+			mapUrl: '',
+			mapShow: false,
 			phase: "lobby",
 			mapName: "",
 			dataUrl: "",
@@ -28,6 +28,7 @@ class InGame extends Component {
 
 		this._eventListener = this._eventListener.bind(this);
 		this._updateScreenshot = this._updateScreenshot.bind(this);
+		this._updateHeatmap = this._updateHeatmap.bind(this);
 	}
 
 	componentDidMount() {
@@ -38,7 +39,7 @@ class InGame extends Component {
 		overwolf.windows.getCurrentWindow(result => {
 			this._dragService = new DragService(result.window, this._headerRef.current)
 		})
-		let resolution = "1098px";
+		let resolution = 1098;
 		this.setState({
 			mapName: "erangel",
 			mapHeight: resolution,
@@ -52,11 +53,12 @@ class InGame extends Component {
 				break;
 			}
 			case 'heatmap': {
-				if (!this.state.mapShow) {
+				if(!this.state.mapShow){
 					try {
 						overwolf.games.events.getInfo((info) => {
 							console.log(info);
 							const phase = info.res.game_info.phase;
+							console.log("phase: ", phase)
 							this.setState({
 								mapShow: true,
 								phase: phase
@@ -71,11 +73,11 @@ class InGame extends Component {
 						console.log(error);
 					}
 				} else {
-					this._hideHeatmap();
-					this.setState({
-						mapShow: false
-					});
+					this._hideHeatmap()
 				}
+				this.setState({
+					mapShow: !this.state.mapShow
+				});
 				break;
 			}
 			default:
@@ -89,15 +91,20 @@ class InGame extends Component {
 	}
 
 	_updateHeatmap(mapName) {
-		this.onMapSelect(mapName);
+		console.log('show heatmap');
 		WindowsService.restore(WindowNames.IN_GAME);
+		this.onMapSelect(mapName);
 	}
 
 	_hideHeatmap() {
+		console.log('hide heatmap');
 		WindowsService.minimize(WindowNames.IN_GAME);
 	}
 
 	onCloseClicked(event) {
+		this.state({
+			mapShow: false
+		});
 		WindowsService.minimize(WindowNames.IN_GAME);
 	}
 
@@ -220,8 +227,7 @@ class InGame extends Component {
 					rangeX={1098}
 					rangeY={1098}
 					domainX={this.state.domainX}
-					domainY={this.state.domainY}
-					dataUlr={this.state.dataUrl}>
+					domainY={this.state.domainY}>
 				</Heatmap>
 
 

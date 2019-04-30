@@ -24,7 +24,7 @@ class App extends Component {
   render() {
     return (
 
-      <div className="App" style={{ height: "1098px" }}>
+      <div className="App" style={{ height: "1098px", width: '1098px' }}>
 
         {
           this.state.phase === "lobby" ?
