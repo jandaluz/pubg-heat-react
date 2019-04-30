@@ -26,9 +26,9 @@ class HeatMap extends Component {
   }
 
   componentDidUpdate = (prevProps, prevState, snapshot) => {
+    console.log("componentDidUpdate", this.props);
     if (prevProps.mapName !== this.props.mapName &&
       prevProps.mapUrl !== this.props.mapUrl) {
-      console.log(this.props);
       this.setState({
         "mapName": this.props.mapName,
         "mapUrl": this.props.mapUrl,
@@ -36,8 +36,7 @@ class HeatMap extends Component {
         "domainY": this.props.domainY,
         "rangeX": this.props.rangeX,
         "rangeY" :this.props.rangeY
-      });
-      this.loadTheMap();
+      }, this.loadTheMap);
       return true;
     }
   }
@@ -53,7 +52,7 @@ class HeatMap extends Component {
     svg.selectAll("*").remove();
   }
   readTheCsv = () => {
-
+    console.log('read the csv');
     let height = this.state.rangeY;
     let width = this.state.rangeX;
     var svg = d3.select("#d3-svg")
@@ -62,9 +61,11 @@ class HeatMap extends Component {
       .attr("height", height)
       .append("g")
 
-    d3.csv("data/landings_subset.csv").then((data) => {
+    let dataUrl = "/pubg-hackathon-published/landings/" + this.props.mapName + ".csv";
+    console.log(dataUrl);
+    d3.csv(dataUrl, {cache: "force-cache"}).then((data) => {
       const landingCoords = data.filter((data) => {
-        return data.map_name === this.state.mapName;
+        return data.map_name === this.props.mapName;
       }).map((data) => {
         return {
           "x": (+data.x) / 100,
@@ -90,8 +91,7 @@ class HeatMap extends Component {
             return yScale(d.y);
           })
           .size([this.state.domainX/100, this.state.domainY/100])
-          .cellSize(8)
-          (landingCoords);
+          .cellSize(8)(landingCoords);
 
         console.log(contours)
         const lastContour = contours[contours.length - 1].value;

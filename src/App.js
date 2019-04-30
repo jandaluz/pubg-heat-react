@@ -2,10 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
-//import Erangel from './components/erangel/Erangel'
 import HeatMap from './components/map/HeatMap';
-import * as d3 from "d3"
-import * as d3contours from "d3-contour"
 
 class App extends Component {
 
@@ -62,8 +59,8 @@ class App extends Component {
       case "erangel":
         this.setState({
           "mapName": "Erangel_Main",
-          "mapUrlLowRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Erangel_Main_Low_Res.png",
-          "mapUrlHighRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Erangel_Main_High_Res.png",
+          "mapUrlLowRes": "https://raw.githubusercontent.com/pubg/api-assets/master/Assets/Maps/Erangel_Main_Low_Res.png",
+          "mapUrlHighRes": "https://raw.githubusercontent.com/pubg/api-assets/master/Assets/Maps/Erangel_Main_High_Res.png",
           "domainX": 816000,
           "domainY": 816000,
         });
@@ -71,8 +68,8 @@ class App extends Component {
       case "miramar":
         this.setState({
           "mapName": "Desert_Main",
-          "mapUrlLowRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Miramar_Main_Low_Res.png",
-          "mapUrlHighRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Miramar_Main_High_Res.png",
+          "mapUrlLowRes": "https://raw.githubusercontent.com/pubg/api-assets//master/Assets/Maps/Miramar_Main_Low_Res.png",
+          "mapUrlHighRes": "https://raw.githubusercontent.com/pubg/api-assets//master/Assets/Maps/Miramar_Main_High_Res.png",
           "domainX": 816000,
           "domainY": 816000,
         });
@@ -80,8 +77,8 @@ class App extends Component {
       case "sanhok":
         this.setState({
           "mapName": "Savage_Main",
-          "mapUrlLowRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Sanhok_Main_Low_Res.png",
-          "mapUrlHighRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Sanhok_Main_High_Res.png",
+          "mapUrlLowRes": "https://raw.githubusercontent.com/pubg/api-assets//master/Assets/Maps/Sanhok_Main_Low_Res.png",
+          "mapUrlHighRes": "https://raw.githubusercontent.com/pubg/api-assets/master/Assets/Maps/Sanhok_Main_High_Res.png",
           "domainX": 408000,
           "domainY": 408000,
         });
@@ -89,8 +86,8 @@ class App extends Component {
       case "vikendi":
         this.setState({
           "mapName": "DihorOtok_Main",
-          "mapUrlLowRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Vikendi_Main_Low_Res.png",
-          "mapUrlHighRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Vikendi_Main_High_Res.png",
+          "mapUrlLowRes": "https://raw.githubusercontent.com/pubg/api-assets/master/Assets/Maps/Vikendi_Main_Low_Res.png",
+          "mapUrlHighRes": "https://raw.githubusercontent.com/pubg/api-assets/master/Assets/Maps/Vikendi_Main_High_Res.png",
           "domainX": 612000,
           "domainY": 612000,
         });
