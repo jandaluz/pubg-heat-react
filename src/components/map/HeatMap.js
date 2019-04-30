@@ -62,7 +62,8 @@ class HeatMap extends Component {
       .attr("height", height)
       .append("g")
 
-    d3.csv("data/landings_subset.csv").then((data) => {
+    const dataUrl = "https://storage.googleapis.com/pubg-hackathon-published/landings/" + this.props.mapName + ".csv";
+    d3.csv(dataUrl).then((data) => {
       const landingCoords = data.filter((data) => {
         return data.map_name === this.state.mapName;
       }).map((data) => {

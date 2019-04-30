@@ -24,14 +24,6 @@ function _setHotkey(hotkeyId, action) {
 	});
 }
 
-function getTakeScreenshotHotkey() {
-	return new Promise((resolve, reject) => {
-		_getHotkey(HOTKEYS.TAKE_SCREENSHOT, function (result) {
-			resolve(result);
-		});
-	});
-}
-
 function getToggleHotkey() {
 	return new Promise((resolve, reject) => {
 		_getHotkey(HOTKEYS.TOGGLE, function (result) {
@@ -48,10 +40,6 @@ function getHeatMapHotkey() {
 	});
 }
 
-function setTakeScreenshotHotkey(action) {
-	_setHotkey(HOTKEYS.TAKE_SCREENSHOT, action);
-}
-
 function setHeatMapHotkey(action) {
 	_setHotkey(HOTKEYS.SHOW_HEATMAP, action)
 }
@@ -61,9 +49,7 @@ function addHotkeyChangeListener(listener) {
 }
 
 export default {
-	getTakeScreenshotHotkey,
 	getToggleHotkey,
-	setTakeScreenshotHotkey,
 	addHotkeyChangeListener,
 	setHeatMapHotkey,
 	getHeatMapHotkey,

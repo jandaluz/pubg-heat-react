@@ -51,14 +51,6 @@ class BackgroundController {
 	}
 
 	static _registerHotkeys() {
-		HotkeysService.setTakeScreenshotHotkey(async () => {
-			try {
-				let screenshotUrl = await ScreenshotService.takeScreenshot();
-				window.ow_eventBus.trigger('screenshot', screenshotUrl);
-			} catch (e) {
-				console.error(e);
-			}
-		});
 		HotkeysService.setHeatMapHotkey(async () => {
 			try {
 				window.ow_eventBus.trigger('heatmap')

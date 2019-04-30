@@ -5,7 +5,6 @@ import Nav from 'react-bootstrap/Nav'
 //import Erangel from './components/erangel/Erangel'
 import HeatMap from './components/map/HeatMap';
 import * as d3 from "d3"
-import * as d3contours from "d3-contour"
 
 class App extends Component {
 
@@ -56,6 +55,18 @@ class App extends Component {
 
     )};
 
+  componentDidMount = () => {
+
+    const mapDictionaryUrl = "https://raw.githubusercontent.com/pubg/api-assets/master/dictionaries/telemetry/mapName.json";
+    fetch(mapDictionaryUrl).then( (resp) => {
+      resp.json();
+    }).then( (json) => {
+      this.setState({
+        mapDictionary: json
+      });
+    });
+  }
+  
   onMapSelect = (eventKey, event) => {
     console.log(eventKey)
     switch (eventKey) {
