@@ -33,13 +33,16 @@ class App extends Component {
             domainY={this.state.domainY}
           />
         ) : null}
+        <div>
+          <div id="d3-svg" />
+        </div>
       </div>
     );
   }
 
   onMapSelect = (eventKey, event) => {
     console.log(eventKey);
-    this.setState(mapInfo[eventKey]);
+    this.setState({...mapInfo[eventKey]});
   };
 }
 

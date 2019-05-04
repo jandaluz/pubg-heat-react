@@ -10,9 +10,7 @@ const HeatMap = props => {
   readTheCsv(mapName, mapUrl, rangeY, rangeX, domainX, domainY);
 
   return (
-    <div>
-      <div id="d3-svg" />
-    </div>
+    null
   );
 };
 
