@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Navbar from './components/Navbar';
 import HeatMap from './components/map/HeatMap';
+import mapInfo from './mapInfo';
 
 class App extends Component {
   constructor(props) {
@@ -18,15 +19,14 @@ class App extends Component {
   }
 
   render() {
+    const { phase, mapName } = this.state;
     return (
       <div className="App" style={{ height: '1098px' }}>
-        {this.state.phase === 'lobby' && (
-          <Navbar onMapSelect={this.onMapSelect} />
-        )}
-        {this.state.mapName !== '' ? (
+        {phase === 'lobby' && <Navbar onMapSelect={this.onMapSelect} />}
+        {mapName ? (
           <HeatMap
             mapName={this.state.mapName}
-            mapUrl={this.state.mapUrlHighRes}
+            mapUrl={this.state.mapUrl}
             rangeX={1098}
             rangeY={1098}
             domainX={this.state.domainX}
@@ -39,54 +39,7 @@ class App extends Component {
 
   onMapSelect = (eventKey, event) => {
     console.log(eventKey);
-    switch (eventKey) {
-      case 'erangel':
-        this.setState({
-          mapName: 'Erangel_Main',
-          mapUrlLowRes:
-            'https://raw.githubusercontent.com/pubg/api-assets/master/Assets/Maps/Erangel_Main_Low_Res.png',
-          mapUrlHighRes:
-            'https://raw.githubusercontent.com/pubg/api-assets/master/Assets/Maps/Erangel_Main_High_Res.png',
-          domainX: 816000,
-          domainY: 816000
-        });
-        break;
-      case 'miramar':
-        this.setState({
-          mapName: 'Desert_Main',
-          mapUrlLowRes:
-            'https://raw.githubusercontent.com/pubg/api-assets//master/Assets/Maps/Miramar_Main_Low_Res.png',
-          mapUrlHighRes:
-            'https://raw.githubusercontent.com/pubg/api-assets//master/Assets/Maps/Miramar_Main_High_Res.png',
-          domainX: 816000,
-          domainY: 816000
-        });
-        break;
-      case 'sanhok':
-        this.setState({
-          mapName: 'Savage_Main',
-          mapUrlLowRes:
-            'https://raw.githubusercontent.com/pubg/api-assets//master/Assets/Maps/Sanhok_Main_Low_Res.png',
-          mapUrlHighRes:
-            'https://raw.githubusercontent.com/pubg/api-assets/master/Assets/Maps/Sanhok_Main_High_Res.png',
-          domainX: 408000,
-          domainY: 408000
-        });
-        break;
-      case 'vikendi':
-        this.setState({
-          mapName: 'DihorOtok_Main',
-          mapUrlLowRes:
-            'https://raw.githubusercontent.com/pubg/api-assets/master/Assets/Maps/Vikendi_Main_Low_Res.png',
-          mapUrlHighRes:
-            'https://raw.githubusercontent.com/pubg/api-assets/master/Assets/Maps/Vikendi_Main_High_Res.png',
-          domainX: 612000,
-          domainY: 612000
-        });
-        break;
-      default:
-        break;
-    }
+    this.setState(mapInfo[eventKey]);
   };
 }
 
