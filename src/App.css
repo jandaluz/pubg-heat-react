@@ -3,8 +3,13 @@ body, html {
   margin: 0;
 }
 
+.in-game {
+  overflow: hidden;
+}
+
 .in-game .map {
   height: 1098px;
+  background-color: rgba(61, 58, 58, 0.733);
 }
 
 .bg {
@@ -120,4 +125,24 @@ path {
    -moz-animation: flickerAnimation 5s infinite;
    -o-animation: flickerAnimation 5s infinite;
     animation: flickerAnimation 5s infinite;
+}
+
+.nav-container {
+  min-height:120px;
+  opacity: 0;
+  float: left;
+  position: fixed;
+}
+
+.nav-container:hover {
+  opacity: .8;
+}
+
+#slide {
+  transition: 0.5s;
+}
+
+.nav-container:hover #slide {
+  transition: 0.5s;
+  left: 0;
 }

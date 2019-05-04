@@ -73,7 +73,7 @@
       },
       "ingame": {
         "file": "build/index.html",
-        "transparent": false,
+        "transparent": true,
         "resizable": false,
         "size": {
           "width": 1098,
@@ -83,7 +83,8 @@
           "width": 620,
           "height": 600
         },
-        "clickthrough": false
+        "clickthrough": false,
+        "focus_game_takeover": "ReleaseOnLostFocus"
       }
     },
     "externally_connectable": {
@@ -93,7 +94,7 @@
         "https://*.google-analytics.com",
         "http://*.google-analytics.com",
         "https://*.googleapis.com",
-        "https://raw.githubusercontent.com"
+        "https://*.githubusercontent.com"
       ]
     }
   }

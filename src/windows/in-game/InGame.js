@@ -31,19 +31,22 @@ class InGame extends Component {
 		this._updateHeatmap = this._updateHeatmap.bind(this);
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
 		let mainWindow = overwolf.windows.getMainWindow();
 		mainWindow.ow_eventBus.addListener(this._eventListener);
 
 		// Make window draggable
 		overwolf.windows.getCurrentWindow(result => {
 			this._dragService = new DragService(result.window, this._headerRef.current)
+			result.ow_eventBus.addListener(this._eventListener);
 		})
-		let resolution = 1098;
 		this.setState({
-			mapName: "erangel",
-			mapHeight: resolution,
-		})
+			"mapName": "Erangel_Main",
+			"mapUrlLowRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Erangel_Main_Low_Res.png",
+			"mapUrlHighRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Erangel_Main_High_Res.png",
+			"domainX": 816000,
+			"domainY": 816000,
+		  });
 	}
 
 	_eventListener(eventName, data) {
@@ -53,24 +56,27 @@ class InGame extends Component {
 				break;
 			}
 			case 'heatmap': {
+				console.log('heatmap event')
 				if(!this.state.mapShow){
 					try {
 						overwolf.games.events.getInfo((info) => {
 							console.log(info);
 							const phase = info.res.game_info.phase;
 							console.log("phase: ", phase)
-							this.setState({
-								mapShow: true,
+							this.setState({								
 								phase: phase
 							})
 							if(info.res.match_info && info.res.match_info.map) {
 								this._updateHeatmap(info.res.match_info.map);
+							} else {
+								this._updateHeatmap(this.state.mapName);
 							}
 						});
 						console.log(this.state);
 					}
 					catch(error) {
 						console.log(error);
+						this._updateHeatmap(this.state.mapName);
 					}
 				} else {
 					this._hideHeatmap()
@@ -116,50 +122,49 @@ class InGame extends Component {
 	onMapSelect = (eventKey, event) => {
 		console.log(eventKey)
 		switch (eventKey) {
-		  case "erangel": case "Erangel_Main":
+			case "miramar": case "Desert_Main":
 			this.setState({
-			  "mapName": "Erangel_Main",
-			  "mapUrlLowRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Erangel_Main_Low_Res.png",
-			  "mapUrlHighRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Erangel_Main_High_Res.png",
-			  "domainX": 816000,
-			  "domainY": 816000,
+				"mapName": "Desert_Main",
+				"mapUrlLowRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Miramar_Main_Low_Res.png",
+				"mapUrlHighRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Miramar_Main_High_Res.png",
+				"domainX": 816000,
+				"domainY": 816000,
 			});
 			break;
-		  case "miramar": case "Desert_Main":
+			case "sanhok": case "Savage_Main":
 			this.setState({
-			  "mapName": "Desert_Main",
-			  "mapUrlLowRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Miramar_Main_Low_Res.png",
-			  "mapUrlHighRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Miramar_Main_High_Res.png",
-			  "domainX": 816000,
-			  "domainY": 816000,
+				"mapName": "Savage_Main",
+				"mapUrlLowRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Sanhok_Main_Low_Res.png",
+				"mapUrlHighRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Sanhok_Main_High_Res.png",
+				"domainX": 408000,
+				"domainY": 408000,
 			});
 			break;
-		  case "sanhok": case "Savage_Main":
+			case "vikendi": case "DihorOtok_Main":
 			this.setState({
-			  "mapName": "Savage_Main",
-			  "mapUrlLowRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Sanhok_Main_Low_Res.png",
-			  "mapUrlHighRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Sanhok_Main_High_Res.png",
-			  "domainX": 408000,
-			  "domainY": 408000,
+				"mapName": "DihorOtok_Main",
+				"mapUrlLowRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Vikendi_Main_Low_Res.png",
+				"mapUrlHighRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Vikendi_Main_High_Res.png",
+				"domainX": 612000,
+				"domainY": 612000,
 			});
 			break;
-		  case "vikendi": case "DihorOtok_Main":
-			this.setState({
-			  "mapName": "DihorOtok_Main",
-			  "mapUrlLowRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Vikendi_Main_Low_Res.png",
-			  "mapUrlHighRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Vikendi_Main_High_Res.png",
-			  "domainX": 612000,
-			  "domainY": 612000,
-			});
-			break;
-		  default:
-			break;
+			case "erangel": case "Erangel_Main": default:
+			  this.setState({
+				"mapName": "Erangel_Main",
+				"mapUrlLowRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Erangel_Main_Low_Res.png",
+				"mapUrlHighRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Erangel_Main_High_Res.png",
+				"domainX": 816000,
+				"domainY": 816000,
+			  });
+			  break;
 		}
 	}
 
 	render() {
 		return (
-			<div style={{ height: this.state.mapHeight }}>
+			<div class={this.props.className} style={{ height: this.state.mapHeight }}>
+			{/* 
 				<svg xmlns='http://www.w3.org/2000/svg' display='none'>
 					<symbol id='window-control_close' viewBox='0 0 30 30'>
 						<line x1='19.5' y1='10.5' x2='10.5' y2='19.5' fill='none' stroke='currentcolor'
@@ -172,7 +177,7 @@ class InGame extends Component {
 							fill='currentcolor' />
 					</symbol>
 				</svg>
-
+			*
 				<header className="app-header" ref={this._headerRef}>
 					<div className="window-controls-group">
 						<button className="icon window-control" id="settingsButton" onClick={this.onSettingsClicked}>
@@ -180,52 +185,48 @@ class InGame extends Component {
 								<use xlinkHref="#window-control_settings" />
 							</svg>
 						</button>
-						<button className="icon window-control window-control-close" id="closeButton" onClick={this.onCloseClicked}>
-							<svg>
-								<use xlinkHref="#window-control_close" />
-							</svg>
-						</button>
 					</div>
 				</header>
-
+			*/}
 				{this.state.phase == "lobby" ?
+					<div id="slide" className="nav-container">
+						<Navbar position="absolute" bg="#343a40" variant="dark">
+							<Navbar.Collapse id="basic-navbar-nav">
+								<Nav className="mr-auto" defaultActiveKey="erangel" >
+									<Nav.Link eventKey="erangel" onSelect={this.onMapSelect} style={{ "color": "#F2A900" }}>Erangel</Nav.Link>
+									<Nav.Link eventKey="miramar" onSelect={this.onMapSelect} style={{ "color": "#F2A900" }}>Miramar</Nav.Link>
+									<Nav.Link eventKey="sanhok" onSelect={this.onMapSelect} style={{ "color": "#F2A900" }}>Sanhok</Nav.Link>
+									<Nav.Link eventKey="vikendi" onSelect={this.onMapSelect} style={{ "color": "#F2A900" }}>Vikendi</Nav.Link>
+								</Nav>
+							</Navbar.Collapse>
+							<Navbar.Collapse className="justify-content-end">
+								<Nav>
+									<header className="app-header" ref={this._headerRef}>
+										<div >
+											<button className="icon window-control" id="settingsButton" onClick={this.onSettingsClicked}>
+												<svg>
+													<use xlinkHref="#window-control_settings" />
+												</svg>
+											</button>
+											<button className="icon window-control window-control-close" id="closeButton" onClick={this.onCloseClicked}>
+												<svg>
+													<use xlinkHref="#window-control_close" />
+												</svg>
+											</button>
+										</div>
+									</header>
+								</Nav>
 
-					<Navbar position="absolute" bg="#343a40" variant="dark">
-						<Navbar.Collapse id="basic-navbar-nav">
-							<Nav className="mr-auto" defaultActiveKey="erangel" >
-								<Nav.Link eventKey="erangel" onSelect={this.onMapSelect} style={{ "color": "#F2A900" }}>Erangel</Nav.Link>
-								<Nav.Link eventKey="miramar" onSelect={this.onMapSelect} style={{ "color": "#F2A900" }}>Miramar</Nav.Link>
-								<Nav.Link eventKey="sanhok" onSelect={this.onMapSelect} style={{ "color": "#F2A900" }}>Sanhok</Nav.Link>
-								<Nav.Link eventKey="vikendi" onSelect={this.onMapSelect} style={{ "color": "#F2A900" }}>Vikendi</Nav.Link>
-							</Nav>
-						</Navbar.Collapse>
-						<Navbar.Collapse className="justify-content-end">
-							<Nav>
-								<header className="app-header" ref={this._headerRef}>
-									<div >
-										<button className="icon window-control" id="settingsButton" onClick={this.onSettingsClicked}>
-											<svg>
-												<use xlinkHref="#window-control_settings" />
-											</svg>
-										</button>
-										<button className="icon window-control window-control-close" id="closeButton" onClick={this.onCloseClicked}>
-											<svg>
-												<use xlinkHref="#window-control_close" />
-											</svg>
-										</button>
-									</div>
-								</header>
-							</Nav>
-
-						</Navbar.Collapse>
-					</Navbar>
+							</Navbar.Collapse>
+						</Navbar>
+					</div>
 					: null
 				}
 				<Heatmap
 					mapName={this.state.mapName}
 					mapUrl={this.state.mapUrlHighRes}
-					rangeX={1098}
-					rangeY={1098}
+					rangeX={this.props.monitorHeight}
+					rangeY={this.props.monitorHeight}
 					domainX={this.state.domainX}
 					domainY={this.state.domainY}>
 				</Heatmap>
