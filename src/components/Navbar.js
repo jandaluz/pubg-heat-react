@@ -4,7 +4,7 @@ import Nav from 'react-bootstrap/Nav';
 
 const newNavbar = props => (
   <div id="slide" className="nav-container">
-    <Navbar fixed="top" bg="dark" variant="dark">
+    <Navbar bg="dark" variant="dark">
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
           <Nav.Link eventKey="erangel" onSelect={props.onMapSelect}>
