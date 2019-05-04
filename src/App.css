@@ -80,3 +80,23 @@ path {
    -o-animation: flickerAnimation 5s infinite;
     animation: flickerAnimation 5s infinite;
 }
+
+.nav-container {
+  min-height:120px;
+  opacity: 0;
+  float: left;
+  position: fixed;
+}
+
+.nav-container:hover {
+  opacity: .8;
+}
+
+#slide {
+  transition: 0.5s;
+}
+
+.nav-container:hover #slide {
+  transition: 0.5s;
+  left: 0;
+}
