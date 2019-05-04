@@ -11,7 +11,8 @@ class App extends Component {
 		super(props);
 
 		this.state = {
-			currentWindowName: ''
+			currentWindowName: '',
+			monitorHeight: 1098
 		};
 	}
 
@@ -23,20 +24,25 @@ class App extends Component {
 		});
 	}
 
+	monitorHeightCallback(monitorHeight) {
+		this.setState({
+			monitorHeight: monitorHeight
+		});
+	}
   render() {
 		const windowName = this.state.currentWindowName;
 		let window;
 		let body = document.getElementsByTagName('body')[0]
 		switch (windowName) {
 			case 'background':
-				window = <Background />
+				window = <Background monitorHeightCallback={this.monitorHeightCallback}/>
 				break;
 			case 'settings':
 				window = <Settings />
 				body.className = 'settings'
 				break;
 			case 'ingame':
-				window = <InGame className="map"/>
+				window = <InGame className="map" monitorHeight={this.state.monitorHeight}/>
 				body.className = 'in-game'
 				break;
 		}
