@@ -14,6 +14,7 @@ class InGame extends Component {
 	constructor(props) {
 		super(props);
 
+		console.log(props);
 		this._dragService = null;
 		this._headerRef = React.createRef();
 
@@ -25,7 +26,7 @@ class InGame extends Component {
 			mapName: "",
 			dataUrl: "",
 		}
-
+		this.db = this.props.iDb;
 		this._eventListener = this._eventListener.bind(this);
 		this._updateScreenshot = this._updateScreenshot.bind(this);
 		this._updateHeatmap = this._updateHeatmap.bind(this);
@@ -38,7 +39,7 @@ class InGame extends Component {
 		// Make window draggable
 		overwolf.windows.getCurrentWindow(result => {
 			this._dragService = new DragService(result.window, this._headerRef.current)
-			result.ow_eventBus.addListener(this._eventListener);
+			result.window.ow_eventBus.addListener(this._eventListener);
 		})
 		this.setState({
 			"mapName": "Erangel_Main",
@@ -47,6 +48,7 @@ class InGame extends Component {
 			"domainX": 816000,
 			"domainY": 816000,
 		  });
+		  console.log('db', this.db);
 	}
 
 	_eventListener(eventName, data) {
@@ -162,6 +164,7 @@ class InGame extends Component {
 	}
 
 	render() {
+		console.log(this.state);
 		return (
 			<div class={this.props.className} style={{ height: this.state.mapHeight }}>
 			{/* 
@@ -228,9 +231,9 @@ class InGame extends Component {
 					rangeX={this.props.monitorHeight}
 					rangeY={this.props.monitorHeight}
 					domainX={this.state.domainX}
-					domainY={this.state.domainY}>
+					domainY={this.state.domainY}
+					iDb={this.db}>
 				</Heatmap>
-
 
 			</div>
 		);

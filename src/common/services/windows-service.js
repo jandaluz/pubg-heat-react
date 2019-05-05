@@ -80,6 +80,15 @@ function minimize(name) {
 	});
 }
 
+function focusWindow(name) {
+	return new Promise(async (resovle, reject) => {
+		await _obtainWindow(name);
+		overwolf.windows.bringToFront(name, true, (result) => {
+			console.log('bring to front result', result);
+		})
+	})
+}
+
 async function getStartupWindowName() {
 	let launchSource = LaunchSourceService.getLaunchSource();
 
@@ -101,5 +110,6 @@ export default {
 	restore,
 	dragMove,
 	minimize,
-	getStartupWindowName
+	getStartupWindowName,
+	focusWindow
 }
