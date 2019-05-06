@@ -72,13 +72,15 @@ class BackgroundController {
 		return await BackgroundController._readMapBlob(mapBlob);		
 	}
 
-	static async _getActiveMonitorHeight(callback) {
-		overwolf.utils.getMonitorsList( (monitorsList) => {
-			const displays = monitorsList.displays;
-			let height = displays.filter( display => display.is_primary)
-				.map( display => display.height)
-				.reduce( (acc, curVal) => acc += curVal);
-			callback(height);
+	static async _getActiveMonitorHeight() {
+		return new Promise( (resolve, reject) => {
+			overwolf.utils.getMonitorsList( (monitorsList) => {
+				const displays = monitorsList.displays;
+				let height = displays.filter( display => display.is_primary)
+					.map( display => display.height)
+					.reduce( (acc, curVal) => acc += curVal);
+				return resolve(height);
+			});
 		});
 	}
 

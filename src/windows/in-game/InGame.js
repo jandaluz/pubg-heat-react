@@ -6,8 +6,8 @@ import WindowsService from '../../common/services/windows-service';
 import DragService from '../../common/services/drag-service';
 import '../../common/style.css';
 import Heatmap from '../../components/map/HeatMap';
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
+import Navbar from '../../components/Navbar';
+import mapInfo from '../../mapInfo';
 import '../../App.css';
 
 class InGame extends Component {
@@ -41,6 +41,7 @@ class InGame extends Component {
 			this._dragService = new DragService(result.window, this._headerRef.current)
 			result.window.ow_eventBus.addListener(this._eventListener);
 		})
+		
 		this.setState({
 			"mapName": "Erangel_Main",
 			"mapUrlLowRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Erangel_Main_Low_Res.png",
@@ -120,48 +121,12 @@ class InGame extends Component {
 		WindowsService.restore(WindowNames.SETTINGS);
 	}
 
-
 	onMapSelect = (eventKey, event) => {
-		console.log(eventKey)
-		switch (eventKey) {
-			case "miramar": case "Desert_Main":
-			this.setState({
-				"mapName": "Desert_Main",
-				"mapUrlLowRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Miramar_Main_Low_Res.png",
-				"mapUrlHighRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Miramar_Main_High_Res.png",
-				"domainX": 816000,
-				"domainY": 816000,
-			});
-			break;
-			case "sanhok": case "Savage_Main":
-			this.setState({
-				"mapName": "Savage_Main",
-				"mapUrlLowRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Sanhok_Main_Low_Res.png",
-				"mapUrlHighRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Sanhok_Main_High_Res.png",
-				"domainX": 408000,
-				"domainY": 408000,
-			});
-			break;
-			case "vikendi": case "DihorOtok_Main":
-			this.setState({
-				"mapName": "DihorOtok_Main",
-				"mapUrlLowRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Vikendi_Main_Low_Res.png",
-				"mapUrlHighRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Vikendi_Main_High_Res.png",
-				"domainX": 612000,
-				"domainY": 612000,
-			});
-			break;
-			case "erangel": case "Erangel_Main": default:
-			  this.setState({
-				"mapName": "Erangel_Main",
-				"mapUrlLowRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Erangel_Main_Low_Res.png",
-				"mapUrlHighRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Erangel_Main_High_Res.png",
-				"domainX": 816000,
-				"domainY": 816000,
-			  });
-			  break;
+		console.log(eventKey);
+		if(mapInfo[eventKey] && mapInfo[eventKey].mapName !== this.state.mapName) {
+			this.setState({...mapInfo[eventKey]});
 		}
-	}
+	  };
 
 	render() {
 		console.log(this.state);
@@ -192,48 +157,22 @@ class InGame extends Component {
 				</header>
 			*/}
 				{this.state.phase == "lobby" ?
-					<div id="slide" className="nav-container">
-						<Navbar position="absolute" bg="#343a40" variant="dark">
-							<Navbar.Collapse id="basic-navbar-nav">
-								<Nav className="mr-auto" defaultActiveKey="erangel" >
-									<Nav.Link eventKey="erangel" onSelect={this.onMapSelect} style={{ "color": "#F2A900" }}>Erangel</Nav.Link>
-									<Nav.Link eventKey="miramar" onSelect={this.onMapSelect} style={{ "color": "#F2A900" }}>Miramar</Nav.Link>
-									<Nav.Link eventKey="sanhok" onSelect={this.onMapSelect} style={{ "color": "#F2A900" }}>Sanhok</Nav.Link>
-									<Nav.Link eventKey="vikendi" onSelect={this.onMapSelect} style={{ "color": "#F2A900" }}>Vikendi</Nav.Link>
-								</Nav>
-							</Navbar.Collapse>
-							<Navbar.Collapse className="justify-content-end">
-								<Nav>
-									<header className="app-header" ref={this._headerRef}>
-										<div >
-											<button className="icon window-control" id="settingsButton" onClick={this.onSettingsClicked}>
-												<svg>
-													<use xlinkHref="#window-control_settings" />
-												</svg>
-											</button>
-											<button className="icon window-control window-control-close" id="closeButton" onClick={this.onCloseClicked}>
-												<svg>
-													<use xlinkHref="#window-control_close" />
-												</svg>
-											</button>
-										</div>
-									</header>
-								</Nav>
-
-							</Navbar.Collapse>
-						</Navbar>
-					</div>
+					<Navbar onMapSelect={this.onMapSelect}>
+					</Navbar>
 					: null
 				}
 				<Heatmap
 					mapName={this.state.mapName}
-					mapUrl={this.state.mapUrlHighRes}
+					mapUrl={this.state.mapUrl}
 					rangeX={this.props.monitorHeight}
 					rangeY={this.props.monitorHeight}
 					domainX={this.state.domainX}
 					domainY={this.state.domainY}
 					iDb={this.db}>
 				</Heatmap>
+				<div>
+          			<div id="d3-svg" />
+        		</div>
 
 			</div>
 		);

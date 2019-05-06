@@ -52,12 +52,12 @@ class App extends Component {
 				currentWindowName: result.window.name
 			});
 		});
-	}
 
-	monitorHeightCallback(monitorHeight) {
+		let monitorHeight = await BackgroundController._getActiveMonitorHeight();
 		this.setState({
 			monitorHeight: monitorHeight
 		});
+
 	}
 
 	mapImageMapCallback = (mapImageMap) => {
@@ -84,9 +84,7 @@ class App extends Component {
 		let body = document.getElementsByTagName('body')[0]
 		switch (windowName) {
 			case 'background':
-				window = <Background
-					monitorHeightCallback={this.monitorHeightCallback}
-					mapImageMapCallback={this.mapImageMapCallback} />
+				window = <Background />
 				break;
 			case 'settings':
 				window = <Settings />
