@@ -15,8 +15,7 @@ class App extends Component {
 
 		this.state = {
 			currentWindowName: '',
-			monitorHeight: 1098,
-			mapMap: {}
+			monitorHeight: 1098
 		};
 
 		this.db = null;
@@ -27,19 +26,25 @@ class App extends Component {
 		console.log(this.db);
 		const maps = await this.getMaps();
 		for (var codeName in maps) {
-			let tx = this.db.transaction("maps", 'readwrite');
-			let store = tx.objectStore('maps');
-			console.log(codeName, maps[codeName]);
-			const map = maps[codeName];
-			const d3MapImg = await BackgroundController._fetchMapImgBase64(map);
-			console.log(d3MapImg);
-			this.db.transaction("maps", 'readwrite')
-				.objectStore('maps')
-				.add({
-					'codeName': codeName,
-					'mapData': d3MapImg,
-					'timestamp': new Date()
-				});
+			const refresh = await IndexedDbService.mapNeedsRefresh(this.db, codeName);
+			if(refresh) {
+				let tx = this.db.transaction("maps", 'readwrite');
+				let store = tx.objectStore('maps');
+				console.log(codeName, maps[codeName]);
+				const map = maps[codeName];
+				const d3MapImg = await BackgroundController._fetchMapImgBase64(map);
+				console.log(d3MapImg);
+				this.db.transaction("maps", 'readwrite')
+					.objectStore('maps')
+					.add({
+						'codeName': codeName,
+						'mapData': d3MapImg,
+						'timestamp': new Date()
+					});
+			}
+			else {
+				console.log('no refresh needed; load images from indexedDb');
+			}
 		}
 
 		overwolf.windows.getCurrentWindow(result => {
