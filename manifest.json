@@ -12,7 +12,9 @@
     "description": "Sample app for PUBG dev challenge in React"
   },
   "permissions": [
-    "Hotkeys"
+    "Hotkeys",
+    "DesktopStreaming",
+    "GameInfo"
   ],
   "data": {
     "game_targeting": {
@@ -37,7 +39,7 @@
       "pubg_devchallenge_heatmap": {
         "title": "Overlay Heat",
         "action-type": "custom",
-        "default": "Ctrl+R"
+        "default": "Shift+Ctrl+R"
       }
     },
     "game_events": [10906],

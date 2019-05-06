@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import IndexedDbService from '../../common/services/indexed-db-service';
 import * as d3 from "d3";
 import * as d3contours from "d3-contour";
 
@@ -35,7 +36,7 @@ class HeatMap extends Component {
         "domainX": this.props.domainX,
         "domainY": this.props.domainY,
         "rangeX": this.props.rangeX,
-        "rangeY" :this.props.rangeY
+        "rangeY": this.props.rangeY
       });
       this.loadTheMap();
       return true;
@@ -43,7 +44,7 @@ class HeatMap extends Component {
   }
   loadTheMap = () => {
     this.clearTheImage();
-    if (this.state.mapName !== "") {
+    if (this.props.mapName !== "") {
       this.readTheCsv();
     }
   }
@@ -52,34 +53,44 @@ class HeatMap extends Component {
     var svg = d3.select("#d3-svg")
     svg.selectAll("*").remove();
   }
+
   readTheCsv = () => {
 
-    let height = this.state.rangeY;
-    let width = this.state.rangeX;
+    let height = this.props.rangeY;
+    let width = this.props.rangeX;
     var svg = d3.select("#d3-svg")
       .append("svg")
       .attr("width", width)
       .attr("height", height)
       .append("g")
 
+    IndexedDbService.getMapImgData(this.props.iDb, this.props.mapName).then((imgData) => {
+      var myimage = svg.append('image')
+        .attr('xlink:href', imgData)
+        .attr('width', width)
+        .attr('height', height)
+      console.log("img");
+      console.log(myimage);
+    });
+
     const dataUrl = "https://storage.googleapis.com/pubg-hackathon-published/landings/" + this.props.mapName + ".csv";
     d3.csv(dataUrl).then((data) => {
       const landingCoords = data.filter((data) => {
-        return data.map_name === this.state.mapName;
+        return data.map_name === this.props.mapName;
       }).map((data) => {
         return {
           "x": (+data.x) / 100,
           "y": (+data.y) / 100
         }
       });
-      console.log(this.state.mapName);
+      console.log(this.props.mapName);
       console.log(landingCoords)
 
       var xScale = d3.scaleLinear()
-        .domain([0, (+this.state.domainX)/100])
+        .domain([0, (+this.props.domainX) / 100])
         .range([0, width]);
       var yScale = d3.scaleLinear()
-        .domain([0, (+this.state.domainY)/100])
+        .domain([0, (+this.props.domainY) / 100])
         .range([0, height])
 
       if (landingCoords.length > 0) {
@@ -90,7 +101,7 @@ class HeatMap extends Component {
           .y((d) => {
             return yScale(d.y);
           })
-          .size([this.state.domainX/100, this.state.domainY/100])
+          .size([this.props.domainX / 100, this.props.domainY / 100])
           .cellSize(8)
           (landingCoords);
 
@@ -105,14 +116,6 @@ class HeatMap extends Component {
           .domain([0, maxDomain])
 
         d3.interpolateYlOrRd()
-
-
-        var myimage = svg.append('image')
-          .attr('xlink:href', this.state.mapUrl)
-          .attr('width', width)
-          .attr('height', height)
-        console.log("img");
-        console.log(myimage);
 
         svg.insert("g")
           .selectAll("path")
