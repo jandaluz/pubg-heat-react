@@ -13,7 +13,8 @@ class App extends Component {
       playerPositionY: 0,
       phase: 'lobby',
       mapName: '',
-      mapUrl: ''
+      mapUrl: '',
+      hideContours: false
     };
     this.onMapSelect = this.onMapSelect.bind(this);
   }
@@ -33,7 +34,7 @@ class App extends Component {
             domainY={this.state.domainY}
           />
         ) : null}
-        <div>
+        <div className="d3-container">
           <div id="d3-svg" />
         </div>
       </div>
@@ -42,7 +43,7 @@ class App extends Component {
 
   onMapSelect = (eventKey, event) => {
     console.log(eventKey);
-    this.setState({...mapInfo[eventKey]});
+    this.setState({ ...mapInfo[eventKey] });
   };
 }
 

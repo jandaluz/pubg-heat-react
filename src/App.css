@@ -100,3 +100,23 @@ path {
   transition: 0.5s;
   left: 0;
 }
+
+.App {
+  text-align: center;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 10px;
+  grid-auto-rows: minmax(100px, auto);
+}
+
+.d3-container {
+  grid-column: 1 / 2;
+  width: 1098px;
+  grid-row: 1 / 6;
+}
+
+.toggle-container {
+  grid-column: 2 / 2;
+  grid-row: 1;
+  text-align: left;
+}
