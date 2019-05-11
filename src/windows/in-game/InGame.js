@@ -37,10 +37,11 @@ class InGame extends Component {
 		mainWindow.ow_eventBus.addListener(this._eventListener);
 
 		// Make window draggable
+		/**
 		overwolf.windows.getCurrentWindow(result => {
 			this._dragService = new DragService(result.window, this._headerRef.current)
-			result.window.ow_eventBus.addListener(this._eventListener);
-		})
+		});
+		*/
 		
 		this.setState({
 			"mapName": "Erangel_Main",
@@ -50,6 +51,7 @@ class InGame extends Component {
 			"domainY": 816000,
 		  });
 		  console.log('db', this.db);
+		  console.log('phase', this.state.phase);
 	}
 
 	_eventListener(eventName, data) {
@@ -61,26 +63,16 @@ class InGame extends Component {
 			case 'heatmap': {
 				console.log('heatmap event')
 				if(!this.state.mapShow){
-					try {
-						overwolf.games.events.getInfo((info) => {
-							console.log(info);
-							const phase = info.res.game_info.phase;
-							console.log("phase: ", phase)
-							this.setState({								
-								phase: phase
-							})
-							if(info.res.match_info && info.res.match_info.map) {
-								this._updateHeatmap(info.res.match_info.map);
-							} else {
-								this._updateHeatmap(this.state.mapName);
-							}
-						});
-						console.log(this.state);
-					}
-					catch(error) {
-						console.log(error);
+					overwolf.games.events.getInfo( (info) => {
+						console.log('info object', info);
+						const matchInfo = info.res.match_info;
+						if(matchInfo && matchInfo.map) {
+							this.setState({
+								mapName: matchInfo.map
+							});
+						}
 						this._updateHeatmap(this.state.mapName);
-					}
+					})
 				} else {
 					this._hideHeatmap()
 				}
@@ -89,7 +81,26 @@ class InGame extends Component {
 				});
 				break;
 			}
+			case 'phase': {
+				const phase = data;
+				console.log('phase change detected', phase);
+				this.setState({
+					phase: phase
+				});
+				break;
+			}
+			case 'map': {
+				const map = data;
+				console.log('map change detected', map)
+				this.setState({
+					mapName: map
+				});
+				break;
+			}
 			default:
+				console.log(eventName);
+				console.log(data);
+				console.log(JSON.stringify(data));
 				break;
 		}
 	}
@@ -157,7 +168,9 @@ class InGame extends Component {
 				</header>
 			*/}
 				{this.state.phase == "lobby" ?
-					<Navbar onMapSelect={this.onMapSelect}>
+					<Navbar onMapSelect={this.onMapSelect} 
+						headerRef={this._headerRef}
+						dragService={this._dragService}>
 					</Navbar>
 					: null
 				}
@@ -168,9 +181,10 @@ class InGame extends Component {
 					rangeY={this.props.monitorHeight}
 					domainX={this.state.domainX}
 					domainY={this.state.domainY}
-					iDb={this.db}>
+					iDb={this.db}
+					phase={this.state.phase ? this.state.phase : "lobby"}>
 				</Heatmap>
-				<div>
+				<div class="d3-container">
           			<div id="d3-svg" />
         		</div>
 

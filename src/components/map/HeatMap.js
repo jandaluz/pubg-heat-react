@@ -2,17 +2,21 @@ import React, { Component } from 'react';
 import IndexedDbService from '../../common/services/indexed-db-service';
 import * as d3 from "d3";
 import * as d3contours from "d3-contour";
+import FormCheck from 'react-bootstrap/FormCheck';
 
 const HeatMap = props => {
-  const { mapName, mapUrl, rangeX, rangeY, domainX, domainY, iDb } = props;
+  const { mapName, mapUrl, rangeX, rangeY, domainX, domainY, iDb, phase } = props;
 
   clearTheImage();
 
   if(mapName)
-    readTheCsv(mapName, mapUrl, rangeY, rangeX, domainX, domainY, iDb);
+    readTheCsv(mapName, mapUrl, rangeY, rangeX, domainX, domainY, iDb, phase);
 
   return (
-    null
+    <FormCheck className="checkbox-container">
+      <FormCheck.Input type="checkbox" isStatic={true} onClick={onCheckBoxClicked}/>
+      <FormCheck.Label>Hide Contours</FormCheck.Label>
+    </FormCheck>
   );
 }
 
@@ -23,7 +27,7 @@ const clearTheImage = () => {
   svg.selectAll("*").remove();
 }
 
-const readTheCsv = (mapName, mapUrl, rangeY, rangeX, domainX, domainY, iDb) => {
+const readTheCsv = (mapName, mapUrl, rangeY, rangeX, domainX, domainY, iDb, phase) => {
 
   let height = rangeY;
   let width = rangeX;
@@ -33,14 +37,16 @@ const readTheCsv = (mapName, mapUrl, rangeY, rangeX, domainX, domainY, iDb) => {
     .attr("height", height)
     .append("g")
 
-  IndexedDbService.getMapImgData(iDb, mapName).then((imgData) => {
-    var myimage = svg.append('image')
-      .attr('xlink:href', imgData)
-      .attr('width', width)
-      .attr('height', height)
-    console.log("img");
-    console.log(myimage);
-  });
+  if(phase == "lobby"){ /** don't show the map if you're in game */
+    IndexedDbService.getMapImgData(iDb, mapName).then((imgData) => {
+      var myimage = svg.append('image')
+        .attr('xlink:href', imgData)
+        .attr('width', width)
+        .attr('height', height)
+      console.log("img");
+      console.log(myimage);
+    });
+  }
 
   const dataUrl = "https://storage.googleapis.com/pubg-hackathon-published/landings/" + mapName + ".csv";
   d3.csv(dataUrl).then((data) => {
@@ -95,4 +101,22 @@ const readTheCsv = (mapName, mapUrl, rangeY, rangeX, domainX, domainY, iDb) => {
         .attr("class", "contour")
     }
   });
+}
+
+const hideContours = () => {
+  d3.selectAll("path")
+    .style("display", "none");
+}
+
+const showContours = () => {
+  d3.selectAll("path")
+  .style('display', '');
+}
+
+const onCheckBoxClicked = (e) => {
+  if(e.target.checked) {
+    hideContours();
+  } else {
+    showContours();
+  }
 }
