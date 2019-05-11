@@ -98,6 +98,9 @@
         "https://*.googleapis.com",
         "https://*.githubusercontent.com"
       ]
+    },
+    "developer": {
+      "enable_auto_refresh": true
     }
   }
 }
