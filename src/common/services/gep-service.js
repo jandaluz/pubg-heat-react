@@ -2,7 +2,7 @@
 
 import screenshotService from './screenshots-service';
 
-const REQUIRED_FEATURES = ['kill'];
+const REQUIRED_FEATURES = ['kill','match','phase', 'map', 'me'];
 const REGISTER_RETRY_TIMEOUT = 10000;
 
 function registerToGEP() {
@@ -12,6 +12,7 @@ function registerToGEP() {
 		} else if (response.status === 'success') {
 			overwolf.games.events.onNewEvents.removeListener(_handleGameEvent);
 			overwolf.games.events.onNewEvents.addListener(_handleGameEvent);
+			overwolf.games.events.onInfoUpdates2.removeListener(_handleInfoEvent);
 			overwolf.games.events.onInfoUpdates2.addListener(_handleInfoEvent);
 		}
 	});
@@ -31,22 +32,50 @@ async function _handleGameEvent(eventsInfo) {
 
 				break;
 			}
+			case 'match': {
+				console.log("match event");
+				console.log(eventData);
+				window.ow_eventBus.trigger('match', eventData);
+				break;
+			}
+			case 'phase': {
+				console.log('phase event', eventData);
+				console.log(eventData);
+				window.ow_eventBus.trigger('phase', eventData);
+				break;
+			}
+			case 'map': {
+				console.log('map event', eventData);
+				window.ow_eventBus.trigger('map', eventData);
+			}
 			default:
+				console.log(eventData);
+				console.log(JSON.stringify(eventData));
 				break;
 		}
 	}
 }
 
 async function _handleInfoEvent(infoEvent) {
+	overwolf.log.info('infoEvent');
+	console.log('_handleInfoEvent', infoEvent);
 	overwolf.log.info(JSON.stringify(infoEvent));
-	console.log(infoEvent)
-	try {
-		console.log(infoEvent.res.game_info.phase);
-		const phase = infoEvent.res.game_info.phase
-		window.ow_eventBus.trigger('phase', phase);
-	} catch  {
-		console.log("not able to find phase");
+	switch(infoEvent.feature) {
+		case 'phase': {
+			const phase = infoEvent.info.game_info.phase
+			window.ow_eventBus.trigger('phase', phase);
+			break;
+		}
+		case 'map': {
+			const map = infoEvent.info.match_info.map;
+			window.ow_eventBus.trigger('map', map);
+			break;
+		}
+		default: {
+			console.log('unhandled features', infoEvent.feature);
+		}
 	}
+	
 }
 
 export default {

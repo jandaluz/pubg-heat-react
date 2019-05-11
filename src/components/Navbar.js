@@ -1,10 +1,20 @@
+/*global overwolf*/
+
 import React from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
+import DragService from '../common/services/drag-service';
 
-const newNavbar = props => (
-  <div id="slide" className="nav-container">
-    <Navbar bg="dark" variant="dark">
+const newNavbar = props => {
+  const _headerRef = props.headerRef;
+  let _dragService = props.dragService;
+    // Make window draggable
+    overwolf.windows.getCurrentWindow(result => {
+      _dragService = new DragService(result.window, _headerRef.current)
+    });
+  return (
+  <div id="slide" className="nav-container" ref={_headerRef}>
+    <Navbar bg="dark" variant="dark" fixed="top">
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
           <Nav.Link eventKey="erangel" onSelect={props.onMapSelect} style={{ "color": "#F2A900" }}>
@@ -23,6 +33,6 @@ const newNavbar = props => (
       </Navbar.Collapse>
     </Navbar>
   </div>
-);
+)};
 
 export default newNavbar;
