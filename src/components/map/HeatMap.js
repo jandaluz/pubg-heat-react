@@ -13,8 +13,8 @@ const HeatMap = props => {
     readTheCsv(mapName, mapUrl, rangeY, rangeX, domainX, domainY, iDb, phase);
 
   return (
-    <FormCheck className="checkbox-container">
-      <FormCheck.Input type="checkbox" isStatic={true} onClick={onCheckBoxClicked}/>
+    <FormCheck className="toggle-container" style={{display: phase === "lobby" ? "none" : true}}>
+      <FormCheck.Input type="checkbox" isStatic={true} onClick={toggleContours}/>
       <FormCheck.Label>Hide Contours</FormCheck.Label>
     </FormCheck>
   );
@@ -113,7 +113,7 @@ const showContours = () => {
   .style('display', '');
 }
 
-const onCheckBoxClicked = (e) => {
+const toggleContours = (e) => {
   if(e.target.checked) {
     hideContours();
   } else {

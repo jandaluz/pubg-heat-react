@@ -8,8 +8,11 @@ body, html {
 }
 
 .in-game .map {
-  height: 1098px;
   background-color: rgba(61, 58, 58, 0.733);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 10px;
+  grid-auto-rows: minmax(100px, auto);  
 }
 
 .bg {
@@ -46,7 +49,8 @@ path {
 }
 
 .App {
-  text-align: center;
+  text-align: left;
+
 }
 
 .bg {
@@ -145,4 +149,15 @@ path {
 .nav-container:hover #slide {
   transition: 0.5s;
   left: 0;
+}
+
+.d3-container {
+  grid-column: 1 / 2;
+  grid-row: 1 / 6;
+}
+
+.toggle-container {
+  grid-column: 2 / 3;
+  grid-row: 1;
+  text-align: left;
 }

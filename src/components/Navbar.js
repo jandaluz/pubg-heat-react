@@ -14,9 +14,9 @@ const newNavbar = props => {
     });
   return (
   <div id="slide" className="nav-container" ref={_headerRef}>
-    <Navbar bg="dark" variant="dark" fixed="top">
+    <Navbar bg="dark" variant="dark" fixed="top" style={{width: props.width}}>
       <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="mr-auto">
+        <Nav justify variant="tabs" className="mr-auto">
           <Nav.Link eventKey="erangel" onSelect={props.onMapSelect} style={{ "color": "#F2A900" }}>
             Erangel
           </Nav.Link>

@@ -25,6 +25,7 @@ class InGame extends Component {
 			phase: "lobby",
 			mapName: "",
 			dataUrl: "",
+			windowHeight: this.props.monitorHeight/2,
 		}
 		this.db = this.props.iDb;
 		this._eventListener = this._eventListener.bind(this);
@@ -36,12 +37,13 @@ class InGame extends Component {
 		let mainWindow = overwolf.windows.getMainWindow();
 		mainWindow.ow_eventBus.addListener(this._eventListener);
 
-		// Make window draggable
-		/**
-		overwolf.windows.getCurrentWindow(result => {
-			this._dragService = new DragService(result.window, this._headerRef.current)
+		// adjust current window size and position
+		overwolf.windows.getCurrentWindow( (result) => {
+			let owWindow = result.window;
+			this.adjustWindowSize(owWindow).then( (wResult) =>{
+				console.log(wResult);
+			});
 		});
-		*/
 		
 		this.setState({
 			"mapName": "Erangel_Main",
@@ -85,7 +87,8 @@ class InGame extends Component {
 				const phase = data;
 				console.log('phase change detected', phase);
 				this.setState({
-					phase: phase
+					phase: phase,
+					windowHeight: this.props.monitorHeight ? phase !== "lobby" : this.props.monitorHeight/2
 				});
 				break;
 			}
@@ -139,10 +142,30 @@ class InGame extends Component {
 		}
 	  };
 
+	adjustWindowSize = (window) => {
+		console.log('adjusting the window size...')
+		const height = this.state.windowHeight;
+		const width = this.state.phase === "lobby" ? height : height + height / 3;
+		return new Promise( (resolve, reject) => {
+			overwolf.windows.changeSize(window.id, width, height, (res) => {
+				if(res.status === "success"){
+					console.log('window size adjusted')
+					this.setState({
+						windowWidth: width
+					}, () => {
+						resolve(res.status);
+					});
+				} else {
+					reject(res.stats);
+				}
+			})
+		});	
+	}
 	render() {
 		console.log(this.state);
+		const windowHeight = this.state.windowHeight;
 		return (
-			<div class={this.props.className} style={{ height: this.state.mapHeight }}>
+			<div class={this.props.className} style={{ height: this.state.windowHeight, width: this.state.windowWidth }}>
 			{/* 
 				<svg xmlns='http://www.w3.org/2000/svg' display='none'>
 					<symbol id='window-control_close' viewBox='0 0 30 30'>
@@ -170,15 +193,16 @@ class InGame extends Component {
 				{this.state.phase == "lobby" ?
 					<Navbar onMapSelect={this.onMapSelect} 
 						headerRef={this._headerRef}
-						dragService={this._dragService}>
+						dragService={this._dragService}
+						width={windowHeight}>
 					</Navbar>
 					: null
 				}
 				<Heatmap
 					mapName={this.state.mapName}
 					mapUrl={this.state.mapUrl}
-					rangeX={this.props.monitorHeight}
-					rangeY={this.props.monitorHeight}
+					rangeX={windowHeight}
+					rangeY={windowHeight}
 					domainX={this.state.domainX}
 					domainY={this.state.domainY}
 					iDb={this.db}
