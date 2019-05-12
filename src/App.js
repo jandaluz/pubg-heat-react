@@ -23,6 +23,9 @@ class App extends Component {
     const { phase, mapName } = this.state;
     return (
       <div className="App" style={{ height: '1098px' }}>
+        <div className="d3-container">
+          <div id="d3-svg" />
+        </div>
         {phase === 'lobby' && <Navbar onMapSelect={this.onMapSelect} />}
         {mapName ? (
           <HeatMap
@@ -34,9 +37,6 @@ class App extends Component {
             domainY={this.state.domainY}
           />
         ) : null}
-        <div className="d3-container">
-          <div id="d3-svg" />
-        </div>
       </div>
     );
   }
