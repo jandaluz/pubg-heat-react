@@ -84,6 +84,19 @@ class BackgroundController {
 		});
 	}
 
+	static async _getActiveMonitorDimensions() {
+		return new Promise( (resolve, reject) => {
+			overwolf.utils.getMonitorsList( (monitorsList) => {
+				const displays = monitorsList.displays;
+				let dims = displays.filter( display => display.is_primary)
+					.map( display => ({
+						'height': parseInt(display.height), 'width': parseInt(display.width)
+					}));
+				return resolve(dims);
+			});
+		});
+	}	
+
 	static _readMapBlob(mapBlob) {
 		const reader = new FileReader();
 		reader.readAsDataURL(mapBlob);

@@ -18,6 +18,13 @@ class InGame extends Component {
 		this._dragService = null;
 		this._headerRef = React.createRef();
 
+		this.onMapHeight = this.props.monitorHeight;
+		this.onMapWidth  = Math.floor(this.onMapHeight + this.onMapHeight / 3);
+		this.onMapTop = 0;
+		this.onMapLeft = Math.floor(this.props.monitorWidth / 3);
+		this.lobbyHeight = Math.floor(this.props.monitorHeight / 2);
+		this.lobbyWidth = Math.floor(this.props.monitorHeight / 2);
+
 		this.state = {
 			imgSrc: null,
 			mapUrl: '',
@@ -25,7 +32,8 @@ class InGame extends Component {
 			phase: "lobby",
 			mapName: "",
 			dataUrl: "",
-			windowHeight: this.props.monitorHeight/2,
+			windowHeight: this.lobbyHeight,
+			windowWidth: this.lobbyWidth,
 		}
 		this.db = this.props.iDb;
 		this._eventListener = this._eventListener.bind(this);
@@ -46,16 +54,30 @@ class InGame extends Component {
 		});
 		
 		this.setState({
-			"mapName": "Erangel_Main",
-			"mapUrlLowRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Erangel_Main_Low_Res.png",
-			"mapUrlHighRes": "https://github.com/pubg/api-assets/raw/master/Assets/Maps/Erangel_Main_High_Res.png",
-			"domainX": 816000,
-			"domainY": 816000,
+			...mapInfo['erangel']
 		  });
 		  console.log('db', this.db);
 		  console.log('phase', this.state.phase);
 	}
 
+	componentDidUpdate(prevProps, prevState) {
+		if(prevState.windowHeight !== this.state.windowHeight || prevState.windowWidth !== this.state.windowWidth) {
+			overwolf.windows.getCurrentWindow( (result) => {
+				let owWindow = result.window;
+				this.adjustWindowSize(owWindow).then( (wResult) =>{
+					console.log(wResult);
+				});
+				this.adjustWindowPosition(owWindow).then( (wResult) => {
+					console.log(wResult);
+				});				
+			});
+		}
+		if(this.state.phase === "loading_screen") {
+			this._hideHeatmap()
+		} else {
+			this._updateHeatmap(this.state.mapName);
+		}
+	}
 	_eventListener(eventName, data) {
 		switch (eventName) {
 			case 'screenshot': {
@@ -88,15 +110,28 @@ class InGame extends Component {
 				console.log('phase change detected', phase);
 				this.setState({
 					phase: phase,
-					windowHeight: this.props.monitorHeight ? phase !== "lobby" : this.props.monitorHeight/2
+					windowHeight: phase !== "lobby" ? this.onMapHeight : this.lobbyHeight,
+					windowWidth: phase !== "lobby" ? this.onMapWidth : this.lobbyWidth,
 				});
+				overwolf.games.events.getInfo( (info) => {
+					console.log('info object', info);
+					const matchInfo = info.res.match_info;
+					if(matchInfo && matchInfo.map) {
+						this.setState({
+							mapName: matchInfo.map
+						});
+					}
+					this._updateHeatmap(this.state.mapName);
+				});				
 				break;
 			}
 			case 'map': {
 				const map = data;
 				console.log('map change detected', map)
 				this.setState({
-					mapName: map
+					...mapInfo[map],
+					windowHeight: this.onMapHeight,
+					windowWidth: this.onMapWidth,
 				});
 				break;
 			}
@@ -144,28 +179,51 @@ class InGame extends Component {
 
 	adjustWindowSize = (window) => {
 		console.log('adjusting the window size...')
-		const height = this.state.windowHeight;
-		const width = this.state.phase === "lobby" ? height : height + height / 3;
+		const height = this.state.phase === "lobby" ? this.lobbyHeight : this.onMapHeight;
+		const width = this.state.phase === "lobby" ? this.lobbyWidth : this.onMapWidth;
 		return new Promise( (resolve, reject) => {
 			overwolf.windows.changeSize(window.id, width, height, (res) => {
 				if(res.status === "success"){
-					console.log('window size adjusted')
+					console.log('window size adjusted', height, width)
 					this.setState({
-						windowWidth: width
+						windowHeight: height,
+						windowWidth: width,
 					}, () => {
 						resolve(res.status);
 					});
 				} else {
-					reject(res.stats);
+					reject(res.status);
 				}
 			})
 		});	
 	}
+
+	adjustWindowPosition = (window) => {
+		console.log('adjusting the window position');
+		const top = 0;
+		const left = this.state.phase === "lobby" ? this.lobbyLeft : this.onMapLeft;
+		return new Promise( (resolve, reject) => {
+			if(this.state.phase !== "lobby") {
+				overwolf.windows.changePosition(window.id, left, top, (res) => {
+					if(res.status === "success"){
+						resolve(res.status);
+					} else {
+						reject(res.status);
+					}
+				})
+			}
+			else {
+				resolve("n/a");
+			}
+		});
+	}
+
 	render() {
 		console.log(this.state);
 		const windowHeight = this.state.windowHeight;
+		const windowWidth = this.state.windowWidth;
 		return (
-			<div class={this.props.className} style={{ height: this.state.windowHeight, width: this.state.windowWidth }}>
+			<div class={this.props.className} style={{ height: windowHeight, width: windowWidth }}>
 			{/* 
 				<svg xmlns='http://www.w3.org/2000/svg' display='none'>
 					<symbol id='window-control_close' viewBox='0 0 30 30'>
@@ -190,13 +248,23 @@ class InGame extends Component {
 					</div>
 				</header>
 			*/}
-				{this.state.phase == "lobby" ?
+				{this.state.phase === "lobby" ?
 					<Navbar onMapSelect={this.onMapSelect} 
 						headerRef={this._headerRef}
 						dragService={this._dragService}
-						width={windowHeight}>
+						width={this.state.windowWidth}>
 					</Navbar>
-					: null
+					: 				
+					<header className="app-header" ref={this._headerRef} style={{position: "fixed", width: this.onMapHeight}}>
+						<div className="window-controls-group">
+							{/** <button className="icon window-control" id="settingsButton" onClick={this.onSettingsClicked}>
+								<svg>
+									<use xlinkHref="#window-control_settings" />
+								</svg>
+							</button>
+		*/}
+						</div>
+					</header>
 				}
 				<Heatmap
 					mapName={this.state.mapName}
@@ -208,7 +276,7 @@ class InGame extends Component {
 					iDb={this.db}
 					phase={this.state.phase ? this.state.phase : "lobby"}>
 				</Heatmap>
-				<div class="d3-container">
+				<div class="d3-container" ref={this._headerRef}>
           			<div id="d3-svg" />
         		</div>
 

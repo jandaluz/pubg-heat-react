@@ -40,8 +40,9 @@ button:focus {
 
 .app-header {
   display: flex;
-  height: 40px;
+  height: 30px;
   background-color: #131313;
+  position: fixed;
 }
 
 .window-controls-group {

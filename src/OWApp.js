@@ -15,7 +15,8 @@ class App extends Component {
 
 		this.state = {
 			currentWindowName: '',
-			monitorHeight: 1098
+			monitorHeight: 1098,
+			monitorWidth: 1900
 		};
 
 		this.db = null;
@@ -53,9 +54,11 @@ class App extends Component {
 			});
 		});
 
-		let monitorHeight = await BackgroundController._getActiveMonitorHeight();
+		//let monitorHeight = await BackgroundController._getActiveMonitorHeight();
+		let monitorDims = await BackgroundController._getActiveMonitorDimensions();
 		this.setState({
-			monitorHeight: monitorHeight
+			monitorHeight: monitorDims.height,
+			monitorWidth: monitorDims.width,
 		});
 
 	}
@@ -93,6 +96,7 @@ class App extends Component {
 			case 'ingame':
 				window = <InGame className="map"
 					monitorHeight={this.state.monitorHeight}
+					monitorWidth={this.state.monitorWidth}
 					iDb={this.db} />
 				body.className = 'in-game'
 				break;
