@@ -29,6 +29,7 @@ class App extends Component {
 		for (var codeName in maps) {
 			const refresh = await IndexedDbService.mapNeedsRefresh(this.db, codeName);
 			if(refresh) {
+				console.log(codeName, 'needs refresh');
 				let tx = this.db.transaction("maps", 'readwrite');
 				let store = tx.objectStore('maps');
 				console.log(codeName, maps[codeName]);
@@ -37,7 +38,7 @@ class App extends Component {
 				console.log(d3MapImg);
 				this.db.transaction("maps", 'readwrite')
 					.objectStore('maps')
-					.add({
+					.put({
 						'codeName': codeName,
 						'mapData': d3MapImg,
 						'timestamp': new Date()

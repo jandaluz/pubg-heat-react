@@ -83,9 +83,9 @@ function minimize(name) {
 function hide(name) {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const w = await _obtainWindow(name);
-			console.log('window', w);
-			overwolf.windows.hide(w.id, (result) => {
+			const res = await _obtainWindow(name);
+			console.log('window', res);
+			overwolf.windows.hide(res.window.id, (result) => {
 				if(result.status === 'success') {
 					resolve();
 				} else {

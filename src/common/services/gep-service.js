@@ -14,8 +14,8 @@ function registerToGEP() {
 			overwolf.games.events.onNewEvents.addListener(_handleGameEvent);
 			overwolf.games.events.onInfoUpdates2.removeListener(_handleInfoEvent);
 			overwolf.games.events.onInfoUpdates2.addListener(_handleInfoEvent);
-			overwolf.games.inputTracking.onKeyDown.removeListener(_handleKeyEvent);
-			overwolf.games.inputTracking.onKeyDown.addListener(_handleKeyEvent);
+			//overwolf.games.inputTracking.onKeyDown.removeListener(_handleKeyEvent);
+			//overwolf.games.inputTracking.onKeyDown.addListener(_handleKeyEvent);
 		}
 	});
 }
