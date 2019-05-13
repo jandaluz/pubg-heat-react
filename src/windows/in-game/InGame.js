@@ -183,8 +183,8 @@ class InGame extends Component {
         <Heatmap
           mapName={this.state.mapName}
           mapUrl={this.state.mapUrl}
-          rangeX={windowHeight}
-          rangeY={windowWidth}
+          rangeX={windowWidth}
+          rangeY={windowHeight}
           domainX={this.state.domainX}
           domainY={this.state.domainY}
           iDb={this.db}
