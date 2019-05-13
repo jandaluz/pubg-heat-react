@@ -36,10 +36,10 @@
         "action-type": "toggle",
         "default": "Ctrl+F"
       },
-      "pubg_devchallenge_heatmap": {
+      "pubg_heatmap_showhide": {
         "title": "Overlay Heat",
         "action-type": "custom",
-        "default": "Shift+Ctrl+R"
+        "default": "H"
       }
     },
     "game_events": [10906],

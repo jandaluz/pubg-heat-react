@@ -43,8 +43,6 @@ const readTheCsv = (mapName, mapUrl, rangeY, rangeX, domainX, domainY, iDb, phas
         .attr('xlink:href', imgData)
         .attr('width', width)
         .attr('height', height)
-      console.log("img");
-      console.log(myimage);
     });
   }
 
@@ -58,8 +56,7 @@ const readTheCsv = (mapName, mapUrl, rangeY, rangeX, domainX, domainY, iDb, phas
         "y": (+data.y) / 100
       }
     });
-    console.log(mapName);
-    console.log(landingCoords)
+    console.log('d3',mapName);
 
     var xScale = d3.scaleLinear()
       .domain([0, (+domainX) / 100])
@@ -80,9 +77,7 @@ const readTheCsv = (mapName, mapUrl, rangeY, rangeX, domainX, domainY, iDb, phas
         .cellSize(8)
         (landingCoords);
 
-      console.log(contours)
       const lastContour = contours[contours.length - 1].value;
-      console.log(lastContour);
       let maxDomain = lastContour;
 
       // Prepare a color palette

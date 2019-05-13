@@ -10,6 +10,7 @@ function openDb(dbName) {
         dbRequest.onupgradeneeded = (event) => {
             const db = event.target.result;
             db.createObjectStore("maps", { keyPath: "codeName" });
+            db.createObjectSTore("user", { keyPath: "setting"});
             resolve(db);
         }
 

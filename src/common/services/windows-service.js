@@ -80,6 +80,24 @@ function minimize(name) {
 	});
 }
 
+function hide(name) {
+	return new Promise(async (resolve, reject) => {
+		try {
+			const w = await _obtainWindow(name);
+			console.log('window', w);
+			overwolf.windows.hide(w.id, (result) => {
+				if(result.status === 'success') {
+					resolve();
+				} else {
+					reject(result)
+				}
+			});
+		} catch (e) {
+			reject(e);
+		}
+	});
+}
+
 function focusWindow(name) {
 	return new Promise(async (resovle, reject) => {
 		await _obtainWindow(name);
@@ -111,5 +129,6 @@ export default {
 	dragMove,
 	minimize,
 	getStartupWindowName,
-	focusWindow
+	focusWindow,
+	hide,
 }

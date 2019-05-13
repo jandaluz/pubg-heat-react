@@ -17,6 +17,7 @@ class InGame extends Component {
 		console.log(props);
 		this._dragService = null;
 		this._headerRef = React.createRef();
+		this._d3Ref = React.createRef();
 
 		this.onMapHeight = this.props.monitorHeight;
 		this.onMapWidth  = Math.floor(this.onMapHeight + this.onMapHeight / 3);
@@ -39,6 +40,12 @@ class InGame extends Component {
 		this._eventListener = this._eventListener.bind(this);
 		this._updateScreenshot = this._updateScreenshot.bind(this);
 		this._updateHeatmap = this._updateHeatmap.bind(this);
+		this.windowId = null;
+		this.validPhases = ["lobby", "aircraft", "freefly"]
+		overwolf.windows.getCurrentWindow(result => {
+			this._dragService = new DragService(result.window, this._headerRef.current)
+			new DragService(result.window, this._d3Ref);
+		  });
 	}
 
 	async componentDidMount() {
@@ -48,6 +55,7 @@ class InGame extends Component {
 		// adjust current window size and position
 		overwolf.windows.getCurrentWindow( (result) => {
 			let owWindow = result.window;
+			this.windowId = owWindow.id;
 			this.adjustWindowSize(owWindow).then( (wResult) =>{
 				console.log(wResult);
 			});
@@ -72,10 +80,10 @@ class InGame extends Component {
 				});				
 			});
 		}
-		if(this.state.phase === "loading_screen") {
-			this._hideHeatmap()
-		} else {
+		if(this.validPhases.includes(this.state.phase) && this.state.mapShow) {
 			this._updateHeatmap(this.state.mapName);
+		} else {
+			this._hideHeatmap()
 		}
 	}
 	_eventListener(eventName, data) {
@@ -113,26 +121,36 @@ class InGame extends Component {
 					windowHeight: phase !== "lobby" ? this.onMapHeight : this.lobbyHeight,
 					windowWidth: phase !== "lobby" ? this.onMapWidth : this.lobbyWidth,
 				});
-				overwolf.games.events.getInfo( (info) => {
-					console.log('info object', info);
-					const matchInfo = info.res.match_info;
-					if(matchInfo && matchInfo.map) {
-						this.setState({
-							mapName: matchInfo.map
-						});
-					}
-					this._updateHeatmap(this.state.mapName);
-				});				
+				if(this.validPhases.includes(phase) && phase !== "lobby"){
+					overwolf.games.events.getInfo( (info) => {
+						console.log('info object', info);
+						const matchInfo = info.res.match_info;
+						if(matchInfo && matchInfo.map) {
+							this.setState({
+								mapName: matchInfo.map
+							}, () => {
+								this._updateHeatmap(this.state.mapName);
+							});
+						}
+					});		
+				} else {
+					this._hideHeatmap();
+				}		
 				break;
 			}
 			case 'map': {
 				const map = data;
-				console.log('map change detected', map)
+				console.log('map change detected', map, this.state.phase)
 				this.setState({
 					...mapInfo[map],
 					windowHeight: this.onMapHeight,
 					windowWidth: this.onMapWidth,
 				});
+				break;
+			}
+			case 'keyPress': {
+				const key = data;
+				console.log('key pressed', key);
 				break;
 			}
 			default:
@@ -150,13 +168,21 @@ class InGame extends Component {
 
 	_updateHeatmap(mapName) {
 		console.log('show heatmap');
-		WindowsService.restore(WindowNames.IN_GAME);
-		this.onMapSelect(mapName);
+		if(this.validPhases.includes(this.state.phase)) {
+			WindowsService.restore(WindowNames.IN_GAME);
+			this.onMapSelect(mapName);
+			this.setState({
+				mapShow: true
+			});
+		} else {
+			console.log("don't show hetmap, invalid phase", this.state.phase);
+		}
 	}
 
 	_hideHeatmap() {
 		console.log('hide heatmap');
 		WindowsService.minimize(WindowNames.IN_GAME);
+		//WindowsService.hide(WindowNames.IN_GAME);
 	}
 
 	onCloseClicked(event) {
@@ -255,7 +281,7 @@ class InGame extends Component {
 						width={this.state.windowWidth}>
 					</Navbar>
 					: 				
-					<header className="app-header" ref={this._headerRef} style={{position: "fixed", width: this.onMapHeight}}>
+					<header className="app-header" ref={this._headerRef} style={{width: this.onMapHeight}}>
 						<div className="window-controls-group">
 							{/** <button className="icon window-control" id="settingsButton" onClick={this.onSettingsClicked}>
 								<svg>
@@ -276,7 +302,7 @@ class InGame extends Component {
 					iDb={this.db}
 					phase={this.state.phase ? this.state.phase : "lobby"}>
 				</Heatmap>
-				<div class="d3-container" ref={this._headerRef}>
+				<div class="d3-container" ref={this._d3Ref}>
           			<div id="d3-svg" />
         		</div>
 
