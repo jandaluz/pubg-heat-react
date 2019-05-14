@@ -1,26 +1,84 @@
+body,
+html {
+  margin: 0;
+}
+
+.in-game {
+  overflow: hidden;
+}
+
+.in-game .map {
+  background-color: rgba(61, 58, 58, 0.1);
+}
+
+.bg {
+  /* Full height */
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  /* background-size: 150%; */
+}
+
+path {
+  fill-opacity: 0.6;
+  stroke: #000;
+  stroke-opacity: 0.6;
+  stroke-width: 0.5px;
+}
+
+.erangel {
+  background-image: url('https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Erangel_heat.png');
+}
+
+.miramar {
+  background-image: url('https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Miramar_heat.png');
+}
+
+.sanhok {
+  background-image: url('https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Sanhok_heat.png');
+}
+
+.vikendi {
+  background-image: url('https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Vikendi_heat.png');
+}
+
 .App {
-  text-align: center;
+  text-align: left;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+.bg {
+  /* Full height */
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+path {
+  fill-opacity: 0.5;
+  stroke: #000;
+  stroke-opacity: 0.6;
+  stroke-width: 0.1px;
 }
 
-.App-link {
-  color: #61dafb;
+.erangel {
+  background-image: url('https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Erangel_heat.png');
+}
+
+.miramar {
+  background-image: url('https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Miramar_heat.png');
+}
+
+.sanhok {
+  background-image: url('https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Sanhok_heat.png');
+}
+
+.vikendi {
+  background-image: url('https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Vikendi_heat.png');
 }
 
 @keyframes App-logo-spin {
@@ -31,3 +89,97 @@
     transform: rotate(360deg);
   }
 }
+
+@keyframes pulse {
+  0% {
+    background-color: #001f3f;
+  }
+  100% {
+    background-color: #ff4136;
+  }
+}
+
+@keyframes flickerAnimation {
+  0% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.02;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+@-o-keyframes flickerAnimation {
+  0% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.02;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+@-moz-keyframes flickerAnimation {
+  0% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.02;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+@-webkit-keyframes flickerAnimation {
+  0% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.02;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+.contour {
+  -webkit-animation: flickerAnimation 5s infinite;
+  -moz-animation: flickerAnimation 5s infinite;
+  -o-animation: flickerAnimation 5s infinite;
+  animation: flickerAnimation 5s infinite;
+}
+
+.nav-container {
+  min-height: 120px;
+  opacity: 0.2;
+  float: left;
+  position: fixed;
+}
+
+.nav-container:hover {
+  opacity: 0.8;
+}
+
+#slide {
+  transition: 0.5s;
+}
+
+.nav-container:hover #slide {
+  transition: 0.5s;
+  left: 0;
+}
+
+.d3-container {
+  height: 100%;
+  width: 100%;
+  border-style: groove;
+  border-color: rgba(61, 58, 58, 1);
+  border-width: 2px;
+}
+
+/* .toggle-container {
+  grid-column: 2 / 3;
+  grid-row: 1;
+  text-align: left;
+} */
