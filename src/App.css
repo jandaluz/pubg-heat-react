@@ -1,6 +1,5 @@
 body,
 html {
-  height: 1098px;
   margin: 0;
 }
 
@@ -153,7 +152,7 @@ path {
 
 .nav-container {
   min-height: 120px;
-  opacity: 0;
+  opacity: 0.2;
   float: left;
   position: fixed;
 }
@@ -174,6 +173,9 @@ path {
 .d3-container {
   height: 100%;
   width: 100%;
+  border-style: groove;
+  border-color: rgba(61, 58, 58, 1);
+  border-width: 2px;
 }
 
 /* .toggle-container {
