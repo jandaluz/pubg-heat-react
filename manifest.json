@@ -5,7 +5,7 @@
     "name": "PUBG: Hotdrops",
     "version": "0.0.0",
     "minimum-overwolf-version": "0.120.0",
-    "author": "WallyKarbo",
+    "author": "WallyKarbo,joefr0",
     "icon": "IconMouseOver.png",
     "icon_gray": "IconMouseNormal.png",
     "launcher_icon": "desktop-icon.ico",
@@ -62,7 +62,7 @@
       },
       "settings": {
         "file": "build/index.html",
-        "transparent": true,
+        "transparent": false,
         "resizable": true,
         "size": {
           "width": 500,
@@ -78,12 +78,12 @@
         "transparent": true,
         "resizable": false,
         "size": {
-          "width": 1098,
-          "height": 1098
+          "width": 540,
+          "height": 540
         },
         "min_size": {
-          "width": 620,
-          "height": 600
+          "width": 540,
+          "height": 540
         },
         "clickthrough": false,
         "focus_game_takeover": "ReleaseOnLostFocus"
@@ -98,9 +98,6 @@
         "https://*.googleapis.com",
         "https://*.githubusercontent.com"
       ]
-    },
-    "developer": {
-      "enable_auto_refresh": true
     }
   }
 }
