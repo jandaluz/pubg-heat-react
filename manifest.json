@@ -3,13 +3,13 @@
   "type": "WebApp",
   "meta": {
     "name": "PUBG: Hotdrops",
-    "version": "0.0.0",
+    "version": "0.9.0",
     "minimum-overwolf-version": "0.120.0",
     "author": "WallyKarbo,joefr0",
     "icon": "IconMouseOver.png",
     "icon_gray": "IconMouseNormal.png",
     "launcher_icon": "desktop-icon.ico",
-    "description": "Sample app for PUBG dev challenge in React"
+    "description": "Pubg heatmap in-game visualization"
   },
   "permissions": [
     "Hotkeys",
@@ -65,8 +65,8 @@
         "transparent": false,
         "resizable": true,
         "size": {
-          "width": 500,
-          "height": 300
+          "width": 780,
+          "height": 800
         },
         "min_size": {
           "width": 500,
