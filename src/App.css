@@ -1,4 +1,5 @@
-body, html {
+body,
+html {
   height: 1098px;
   margin: 0;
 }
@@ -9,81 +10,76 @@ body, html {
 
 .in-game .map {
   background-color: rgba(61, 58, 58, 0.1);
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 10px;
-  grid-auto-rows: minmax(100px, auto);  
 }
 
 .bg {
   /* Full height */
-  height: 100%; 
+  height: 100%;
 
   /* Center and scale the image nicely */
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 150%;  
+  /* background-size: 150%; */
 }
 
 path {
-  fill-opacity: .6;
+  fill-opacity: 0.6;
   stroke: #000;
-  stroke-opacity: .6;
-  stroke-width: .5px;  
+  stroke-opacity: 0.6;
+  stroke-width: 0.5px;
 }
 
 .erangel {
-  background-image: url("https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Erangel_heat.png")
+  background-image: url('https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Erangel_heat.png');
 }
 
 .miramar {
-  background-image: url("https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Miramar_heat.png")
+  background-image: url('https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Miramar_heat.png');
 }
 
 .sanhok {
-  background-image: url("https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Sanhok_heat.png")
+  background-image: url('https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Sanhok_heat.png');
 }
 
 .vikendi {
-  background-image: url("https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Vikendi_heat.png")
+  background-image: url('https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Vikendi_heat.png');
 }
 
 .App {
   text-align: left;
-
 }
 
 .bg {
   /* Full height */
-  height: 100%; 
+  height: 100%;
 
   /* Center and scale the image nicely */
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 100%;  
+  background-size: 100%;
 }
 
 path {
-  fill-opacity: .5;
+  fill-opacity: 0.5;
   stroke: #000;
-  stroke-opacity: .6;
-  stroke-width: .1px;  
+  stroke-opacity: 0.6;
+  stroke-width: 0.1px;
 }
 
 .erangel {
-  background-image: url("https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Erangel_heat.png")
+  background-image: url('https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Erangel_heat.png');
 }
 
 .miramar {
-  background-image: url("https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Miramar_heat.png")
+  background-image: url('https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Miramar_heat.png');
 }
 
 .sanhok {
-  background-image: url("https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Sanhok_heat.png")
+  background-image: url('https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Sanhok_heat.png');
 }
 
 .vikendi {
-  background-image: url("https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Vikendi_heat.png")
+  background-image: url('https://storage.googleapis.com/pubg-hackathon-plots/heatmap/Vikendi_heat.png');
 }
 
 @keyframes App-logo-spin {
@@ -97,49 +93,73 @@ path {
 
 @keyframes pulse {
   0% {
-    background-color: #001F3F;
+    background-color: #001f3f;
   }
   100% {
-    background-color: #FF4136;
+    background-color: #ff4136;
   }
 }
 
 @keyframes flickerAnimation {
-  0%   { opacity:.2; }
-  50%  { opacity:0.02; }
-  100% { opacity:.2; }
+  0% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.02;
+  }
+  100% {
+    opacity: 0.2;
+  }
 }
-@-o-keyframes flickerAnimation{
-  0%   { opacity:.2; }
-  50%  { opacity:0.02; }
-  100% { opacity:.2; }
+@-o-keyframes flickerAnimation {
+  0% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.02;
+  }
+  100% {
+    opacity: 0.2;
+  }
 }
-@-moz-keyframes flickerAnimation{
-  0%   { opacity:.2; }
-  50%  { opacity:0.02; }
-  100% { opacity:.2; }
+@-moz-keyframes flickerAnimation {
+  0% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.02;
+  }
+  100% {
+    opacity: 0.2;
+  }
 }
-@-webkit-keyframes flickerAnimation{
-  0%   { opacity:.2; }
-  50%  { opacity:0.02; }
-  100% { opacity:.2; }
+@-webkit-keyframes flickerAnimation {
+  0% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.02;
+  }
+  100% {
+    opacity: 0.2;
+  }
 }
 .contour {
-   -webkit-animation: flickerAnimation 5s infinite;
-   -moz-animation: flickerAnimation 5s infinite;
-   -o-animation: flickerAnimation 5s infinite;
-    animation: flickerAnimation 5s infinite;
+  -webkit-animation: flickerAnimation 5s infinite;
+  -moz-animation: flickerAnimation 5s infinite;
+  -o-animation: flickerAnimation 5s infinite;
+  animation: flickerAnimation 5s infinite;
 }
 
 .nav-container {
-  min-height:120px;
+  min-height: 120px;
   opacity: 0;
   float: left;
   position: fixed;
 }
 
 .nav-container:hover {
-  opacity: .8;
+  opacity: 0.8;
 }
 
 #slide {
@@ -152,12 +172,12 @@ path {
 }
 
 .d3-container {
-  grid-column: 1 / 2;
-  grid-row: 1 / 6;
+  height: 100%;
+  width: 100%;
 }
 
-.toggle-container {
+/* .toggle-container {
   grid-column: 2 / 3;
   grid-row: 1;
   text-align: left;
-}
+} */
