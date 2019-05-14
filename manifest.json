@@ -6,16 +6,12 @@
     "version": "0.9.0",
     "minimum-overwolf-version": "0.120.0",
     "author": "WallyKarbo,joefr0",
-    "icon": "IconMouseOver.png",
-    "icon_gray": "IconMouseNormal.png",
-    "launcher_icon": "desktop-icon.ico",
+    "icon": "HotDropsColor.png",
+    "icon_gray": "HotDropsGray.png",
+    "launcher_icon": "HotDrops.ico",
     "description": "Pubg heatmap in-game visualization"
   },
-  "permissions": [
-    "Hotkeys",
-    "DesktopStreaming",
-    "GameInfo"
-  ],
+  "permissions": ["Hotkeys", "DesktopStreaming", "GameInfo"],
   "data": {
     "game_targeting": {
       "type": "dedicated",
