@@ -28,6 +28,7 @@ class InGame extends Component {
       ...mapInfo['erangel']
     };
     this.db = this.props.iDb;
+    this.onCloseClicked = this.onCloseClicked.bind(this);
     this._eventListener = this._eventListener.bind(this);
     this._updateScreenshot = this._updateScreenshot.bind(this);
     this._updateHeatmap = this._updateHeatmap.bind(this);
@@ -51,12 +52,12 @@ class InGame extends Component {
     console.log('db', this.db);
     console.log('phase', this.state.phase);
 
-		overwolf.windows.getCurrentWindow( (result) => {
-			let owWindow = result.window;
-			this.adjustWindowSize(owWindow).then( (wResult) =>{
-				console.log(wResult);
-			});
-		});    
+    overwolf.windows.getCurrentWindow(result => {
+      let owWindow = result.window;
+      this.adjustWindowSize(owWindow).then(wResult => {
+        console.log(wResult);
+      });
+    });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -132,10 +133,10 @@ class InGame extends Component {
   }
 
   onCloseClicked(event) {
-    this.state({
+    WindowsService.minimize(WindowNames.IN_GAME);
+    this.setState({
       mapShow: false
     });
-    WindowsService.minimize(WindowNames.IN_GAME);
   }
 
   onSettingsClicked(event) {
@@ -149,35 +150,41 @@ class InGame extends Component {
     }
   };
 
-	adjustWindowSize = (window) => {
-		console.log('adjusting the window size...')
-		const height = this.state.windowHeight;
+  adjustWindowSize = window => {
+    console.log('adjusting the window size...');
+    const height = this.state.windowHeight;
     const width = this.state.windowWidth;
     const borderSize = 4;
-		return new Promise( (resolve, reject) => {
-			overwolf.windows.changeSize(window.id, width+borderSize, height+borderSize, (res) => {
-				if(res.status === "success"){
-					console.log('window size adjusted', height, width)
-					this.setState({
-						windowHeight: height,
-						windowWidth: width,
-					}, () => {
-						resolve(res.status);
-					});
-				} else {
-					reject(res.status);
-				}
-			})
-		});	
-	}  
+    return new Promise((resolve, reject) => {
+      overwolf.windows.changeSize(
+        window.id,
+        width + borderSize,
+        height + borderSize,
+        res => {
+          if (res.status === 'success') {
+            console.log('window size adjusted', height, width);
+            this.setState(
+              {
+                windowHeight: height,
+                windowWidth: width
+              },
+              () => {
+                resolve(res.status);
+              }
+            );
+          } else {
+            reject(res.status);
+          }
+        }
+      );
+    });
+  };
 
   render() {
     console.log(this.state);
     const { windowHeight, windowWidth } = this.state;
     return (
-      <div
-        class={this.props.className}
-      >
+      <div class={this.props.className}>
         {/* 
 				<svg xmlns='http://www.w3.org/2000/svg' display='none'>
 					<symbol id='window-control_close' viewBox='0 0 30 30'>
@@ -207,6 +214,7 @@ class InGame extends Component {
           headerRef={this._headerRef}
           dragService={this._dragService}
           width={this.state.windowWidth}
+          onClose={this.onCloseClicked}
         />
         <Heatmap
           mapName={this.state.mapName}

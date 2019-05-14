@@ -16,9 +16,6 @@ const newNavbar = props => {
     _dragService = new DragService(result.window, _headerRef.current);
   });
 
-  const closeOnClick = async event => {
-    await WindowsService.minimize(WindowsNames.IN_GAME);
-  };
   return (
     <div id="slide" className="nav-container" ref={_headerRef}>
       <Navbar id="nav" bg="dark" variant="dark" fixed="top">
@@ -55,7 +52,7 @@ const newNavbar = props => {
           </Nav>
         </Navbar.Collapse>
         <Nav.Item>
-          <Nav.Link id="min-btn" class="nav-link" onClick={closeOnClick}>
+          <Nav.Link id="min-btn" class="nav-link" onClick={props.onClose}>
             X
           </Nav.Link>
         </Nav.Item>
