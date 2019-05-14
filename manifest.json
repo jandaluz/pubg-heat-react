@@ -39,7 +39,7 @@
       "pubg_heatmap_showhide": {
         "title": "Overlay Heat",
         "action-type": "custom",
-        "default": "H"
+        "default": "U"
       }
     },
     "game_events": [10906],
