@@ -4,6 +4,8 @@ import React from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import DragService from '../common/services/drag-service';
+import WindowsService from '../common/services/windows-service';
+import WindowsNames from '../common/constants/window-names';
 import './nav.css';
 
 const newNavbar = props => {
@@ -13,46 +15,50 @@ const newNavbar = props => {
   overwolf.windows.getCurrentWindow(result => {
     _dragService = new DragService(result.window, _headerRef.current);
   });
+
+  const closeOnClick = async event => {
+    await WindowsService.minimize(WindowsNames.IN_GAME);
+  };
   return (
     <div id="slide" className="nav-container" ref={_headerRef}>
-      <Navbar
-        bg="dark"
-        variant="dark"
-        fixed="top"
-        style={{ width: props.width }}
-      >
+      <Navbar id="nav" bg="dark" variant="dark" fixed="top">
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav justify variant="tabs" className="mr-auto">
             <Nav.Link
+              className="nav-link"
               eventKey="erangel"
               onSelect={props.onMapSelect}
-              style={{ color: '#F2A900' }}
             >
               Erangel
             </Nav.Link>
             <Nav.Link
+              className="nav-link"
               eventKey="miramar"
               onSelect={props.onMapSelect}
-              style={{ color: '#F2A900' }}
             >
               Miramar
             </Nav.Link>
             <Nav.Link
+              className="nav-link"
               eventKey="sanhok"
               onSelect={props.onMapSelect}
-              style={{ color: '#F2A900' }}
             >
               Sanhok
             </Nav.Link>
             <Nav.Link
+              className="nav-link"
               eventKey="vikendi"
               onSelect={props.onMapSelect}
-              style={{ color: '#F2A900' }}
             >
               Vikendi
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>
+        <Nav.Item>
+          <Nav.Link id="min-btn" class="nav-link" onClick={closeOnClick}>
+            X
+          </Nav.Link>
+        </Nav.Item>
       </Navbar>
     </div>
   );
