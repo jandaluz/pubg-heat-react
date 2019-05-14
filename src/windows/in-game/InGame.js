@@ -21,7 +21,7 @@ class InGame extends Component {
     this.state = {
       imgSrc: null,
       mapUrl: '',
-      mapShow: false,
+      mapShow: true,
       phase: 'lobby',
       windowHeight: Math.floor(props.monitorHeight / 2), //height should be half of the monitor resolution
       windowWidth: Math.floor(props.monitorHeight / 2), //width should match height to be a square
@@ -132,8 +132,8 @@ class InGame extends Component {
     WindowsService.hide(WindowNames.IN_GAME);
   }
 
-  onCloseClicked(event) {
-    WindowsService.minimize(WindowNames.IN_GAME);
+  async onCloseClicked(event) {
+    await WindowsService.minimize(WindowNames.IN_GAME);
     this.setState({
       mapShow: false
     });
@@ -208,7 +208,8 @@ class InGame extends Component {
 						</button>
 					</div>
 				</header>
-			*/}
+      */}
+        { this.state.mapShow ?
         <Navbar
           onMapSelect={this.onMapSelect}
           headerRef={this._headerRef}
@@ -216,6 +217,8 @@ class InGame extends Component {
           width={this.state.windowWidth}
           onClose={this.onCloseClicked}
         />
+        : null }
+        {this.state.mapShow ?
         <Heatmap
           mapName={this.state.mapName}
           mapUrl={this.state.mapUrl}
@@ -225,7 +228,8 @@ class InGame extends Component {
           domainY={this.state.domainY}
           iDb={this.db}
           phase={this.state.phase ? this.state.phase : 'lobby'}
-        />
+        /> : null
+        }
         <div class="d3-container" ref={this._d3Ref}>
           <div id="d3-svg" />
         </div>
