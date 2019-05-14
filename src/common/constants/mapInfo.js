@@ -30,6 +30,6 @@ const vikendi = {
   domainY: 612000
 };
 
-const maps = { erangel, miramar, sanhok, vikendi };
+const MapInfo = { erangel, miramar, sanhok, vikendi };
 
-export default maps;
+export default MapInfo;

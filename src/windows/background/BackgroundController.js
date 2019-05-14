@@ -1,11 +1,13 @@
 /*global overwolf*/
 
-import WindowNames from '../../common/constants/window-names';
-import RunningGameService from '../../common/services/running-game-service';
-import WindowsService from '../../common/services/windows-service';
-import HotkeysService from '../../common/services/hotkeys-service';
-import GEPService from '../../common/services/gep-service';
-import EventBus from '../../common/services/event-bus';
+import { WindowNames } from '../../common/constants/';
+import {
+  RunningGameService,
+  WindowsService,
+  HotkeysService,
+  GEPService,
+  EventBus
+} from '../../common/services';
 import * as d3 from 'd3';
 
 class BackgroundController {
