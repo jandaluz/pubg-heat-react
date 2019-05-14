@@ -22,17 +22,7 @@ const HeatMap = props => {
     readTheCsv(mapName, mapUrl, rangeX, rangeY, domainX, domainY, iDb, phase);
 
   return (
-    <FormCheck
-      className="toggle-container"
-      style={{ display: phase === 'lobby' ? 'none' : true }}
-    >
-      <FormCheck.Input
-        type="checkbox"
-        isStatic={true}
-        onClick={toggleContours}
-      />
-      <FormCheck.Label>Hide Contours</FormCheck.Label>
-    </FormCheck>
+    null
   );
 };
 
