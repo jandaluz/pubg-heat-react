@@ -23,8 +23,8 @@ class InGame extends Component {
       mapUrl: '',
       mapShow: false,
       phase: 'lobby',
-      windowHeight: Math.floor(props.monitorHeight / 2),
-      windowWidth: Math.floor(props.monitorWidth / 2),
+      windowHeight: Math.floor(props.monitorHeight / 2), //height should be half of the monitor resolution
+      windowWidth: Math.floor(props.monitorHeight / 2), //width should match height to be a square
       ...mapInfo['erangel']
     };
     this.db = this.props.iDb;
@@ -50,6 +50,13 @@ class InGame extends Component {
     });
     console.log('db', this.db);
     console.log('phase', this.state.phase);
+
+		overwolf.windows.getCurrentWindow( (result) => {
+			let owWindow = result.window;
+			this.adjustWindowSize(owWindow).then( (wResult) =>{
+				console.log(wResult);
+			});
+		});    
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -120,8 +127,8 @@ class InGame extends Component {
 
   _hideHeatmap() {
     console.log('hide heatmap');
-    WindowsService.minimize(WindowNames.IN_GAME);
-    //WindowsService.hide(WindowNames.IN_GAME);
+    //WindowsService.minimize(WindowNames.IN_GAME);
+    WindowsService.hide(WindowNames.IN_GAME);
   }
 
   onCloseClicked(event) {
@@ -142,13 +149,34 @@ class InGame extends Component {
     }
   };
 
+	adjustWindowSize = (window) => {
+		console.log('adjusting the window size...')
+		const height = this.state.windowHeight;
+    const width = this.state.windowWidth;
+    const borderSize = 4;
+		return new Promise( (resolve, reject) => {
+			overwolf.windows.changeSize(window.id, width+borderSize, height+borderSize, (res) => {
+				if(res.status === "success"){
+					console.log('window size adjusted', height, width)
+					this.setState({
+						windowHeight: height,
+						windowWidth: width,
+					}, () => {
+						resolve(res.status);
+					});
+				} else {
+					reject(res.status);
+				}
+			})
+		});	
+	}  
+
   render() {
     console.log(this.state);
     const { windowHeight, windowWidth } = this.state;
     return (
       <div
         class={this.props.className}
-        style={{ height: windowHeight, width: windowWidth }}
       >
         {/* 
 				<svg xmlns='http://www.w3.org/2000/svg' display='none'>
