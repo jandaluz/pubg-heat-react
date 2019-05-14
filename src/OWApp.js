@@ -1,11 +1,8 @@
 /*global overwolf*/
 
 import React, { Component } from 'react';
-import Background from './windows/background/Background';
-import BackgroundController from './windows/background/BackgroundController';
-import Settings from './windows/settings/Settings';
-import InGame from './windows/in-game/InGame';
-import IndexedDbService from './common/services/indexed-db-service';
+import { Background, BackgroundController, Settings, InGame } from './windows';
+import { IndexedDbService } from './common/services';
 import './App.css';
 
 class App extends Component {
@@ -116,6 +113,8 @@ class App extends Component {
           );
           body.className = 'in-game';
         }
+        break;
+      default:
         break;
     }
 

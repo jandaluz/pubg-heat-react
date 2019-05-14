@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import OWApp from './OWApp'
+import OWApp from './OWApp';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(<OWApp />, document.getElementById('root'));

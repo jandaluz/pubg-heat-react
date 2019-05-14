@@ -1,13 +1,10 @@
 /*global overwolf*/
 
 import React, { Component } from 'react';
-import WindowNames from '../../common/constants/window-names';
-import WindowsService from '../../common/services/windows-service';
-import DragService from '../../common/services/drag-service';
+import { WindowNames, MapInfo } from '../../common/constants';
+import { WindowsService, DragService } from '../../common/services';
+import { Heatmap, Navbar } from '../../components/';
 import '../../common/style.css';
-import Heatmap from '../../components/map/HeatMap';
-import Navbar from '../../components/Navbar';
-import mapInfo from '../../mapInfo';
 import '../../App.css';
 
 class InGame extends Component {
@@ -25,7 +22,7 @@ class InGame extends Component {
       phase: 'lobby',
       windowHeight: Math.floor(props.monitorHeight / 2), //height should be half of the monitor resolution
       windowWidth: Math.floor(props.monitorHeight / 2), //width should match height to be a square
-      ...mapInfo['erangel']
+      ...MapInfo['erangel']
     };
     this.db = this.props.iDb;
     this.onCloseClicked = this.onCloseClicked.bind(this);
@@ -47,7 +44,7 @@ class InGame extends Component {
     mainWindow.ow_eventBus.addListener(this._eventListener);
 
     this.setState({
-      ...mapInfo['erangel']
+      ...MapInfo['erangel']
     });
     console.log('db', this.db);
     console.log('phase', this.state.phase);
@@ -145,8 +142,8 @@ class InGame extends Component {
 
   onMapSelect = (eventKey, event) => {
     console.log(eventKey);
-    if (mapInfo[eventKey] && mapInfo[eventKey].mapName !== this.state.mapName) {
-      this.setState({ ...mapInfo[eventKey] });
+    if (MapInfo[eventKey] && MapInfo[eventKey].mapName !== this.state.mapName) {
+      this.setState({ ...MapInfo[eventKey] });
     }
   };
 
@@ -185,27 +182,27 @@ class InGame extends Component {
     const { windowHeight, windowWidth } = this.state;
     return (
       <div class={this.props.className}>
-        { this.state.mapShow ?
-        <Navbar
-          onMapSelect={this.onMapSelect}
-          headerRef={this._headerRef}
-          dragService={this._dragService}
-          width={this.state.windowWidth}
-          onClose={this.onCloseClicked}
-        />
-        : null }
-        {this.state.mapShow ?
-        <Heatmap
-          mapName={this.state.mapName}
-          mapUrl={this.state.mapUrl}
-          rangeX={windowWidth}
-          rangeY={windowHeight}
-          domainX={this.state.domainX}
-          domainY={this.state.domainY}
-          iDb={this.db}
-          phase={this.state.phase ? this.state.phase : 'lobby'}
-        /> : null
-        }
+        {this.state.mapShow ? (
+          <Navbar
+            onMapSelect={this.onMapSelect}
+            headerRef={this._headerRef}
+            dragService={this._dragService}
+            width={this.state.windowWidth}
+            onClose={this.onCloseClicked}
+          />
+        ) : null}
+        {this.state.mapShow ? (
+          <Heatmap
+            mapName={this.state.mapName}
+            mapUrl={this.state.mapUrl}
+            rangeX={windowWidth}
+            rangeY={windowHeight}
+            domainX={this.state.domainX}
+            domainY={this.state.domainY}
+            iDb={this.db}
+            phase={this.state.phase ? this.state.phase : 'lobby'}
+          />
+        ) : null}
         <div class="d3-container" ref={this._d3Ref}>
           <div id="d3-svg" />
         </div>
