@@ -1,0 +1,19 @@
+#nav {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.nav-link {
+  color: #f2a900 !important;
+}
+
+#min-btn {
+  border: 1px solid white;
+  border-radius: 0.25rem;
+}
+
+#min-btn:hover,
+#min-btn:active {
+  color: white !important;
+}
