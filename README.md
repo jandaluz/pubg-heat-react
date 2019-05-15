@@ -1,4 +1,4 @@
-# PUBG: Hot Drops
+# <img src="HotDrops.ico" alt="icon" width="50"/> PUBG: Hot Drops
 
 An overwolf app that shows the most popular spots to land on every map.
 
@@ -17,8 +17,6 @@ Submission to the Overwolf/PUBG Developer Challenge 2019
 <!-- take new screenshot where you can see the heatmap -->
 
 ![InGame](./PUBG-HotDrops.jpg?raw=true 'Screenshot')
-
-![Icon](./HotDrops.ico?raw=true 'Hot Drops Icon')
 
 ## Credits
 
