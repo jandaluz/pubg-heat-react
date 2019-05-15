@@ -12,6 +12,8 @@ Submission to the Overwolf/PUBG Developer Challenge 2019
 - [Overwolf](https://www.overwolf.com/) - In game overlay
 - [D3](https://d3js.org/) - Data visualization
 
+Used python to grab sample matches from the official PUBG api and get the landing spots for every player in those games. - [repo](https://github.com/jandaluz/pubg-python-agg)
+
 ## Screenshots
 
 <!-- take new screenshot where you can see the heatmap -->
