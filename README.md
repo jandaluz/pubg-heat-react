@@ -8,8 +8,9 @@ Submission to the Overwolf/PUBG Developer Challenge 2019
 
 ## Technology Used
 
-- React - User Interface
+- [React](https://reactjs.org/) - User Interface
 - [Overwolf](https://www.overwolf.com/) - In game overlay
+- [D3](https://d3js.org/) - Data visualization
 
 ## Screenshots
 
