@@ -25,3 +25,5 @@ Used python to grab sample matches from the official PUBG api and get the landin
 - [Jamison Andaluz](https://www.linkedin.com/in/jamisonandaluz/) - Developer - [Github](https://github.com/jandaluz)
 
 - [Joseph Andaluz](https://www.linkedin.com/in/jandaluz/) - Developer - [Github](https://github.com/jandaluz1)
+
+- Icon made by [Darius Dan](https://www.flaticon.com/authors/darius-dan) from www.flaticon.com
