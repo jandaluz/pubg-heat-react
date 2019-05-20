@@ -18,7 +18,7 @@ Used python to grab sample matches from the official PUBG api and get the landin
 
 <!-- take new screenshot where you can see the heatmap -->
 
-<img src="PUBG-HotDrops.jpg" alt="In Game" width="800"/>
+<img src="./store/Screenshot1.jpg" alt="In Game" width="800"/>
 
 ## Credits
 
