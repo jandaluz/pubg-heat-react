@@ -30,7 +30,7 @@ class InGame extends Component {
     this._updateScreenshot = this._updateScreenshot.bind(this);
     this._updateHeatmap = this._updateHeatmap.bind(this);
     this.windowId = null;
-    this.validPhases = ['lobby'];
+    this.validPhases = ['lobby', 'airfield', 'aircraft'];
     overwolf.windows.getCurrentWindow(result => {
       this._dragService = new DragService(
         result.window,
@@ -70,6 +70,14 @@ class InGame extends Component {
       this._updateHeatmap();
     }
   }
+
+  componentShouldUpdate(nextProps, nextState) {
+    if(nextState.mapName === this.state.mapName && nextState.mapShow === this.state.mapShow) {
+      return false;
+    }
+    
+    return true;
+  }
   _eventListener(eventName, data) {
     switch (eventName) {
       case 'heatmap': {
@@ -99,6 +107,11 @@ class InGame extends Component {
         this.setState({
           phase: phase
         });
+        break;
+      }
+      case 'map': {
+        const mapName = data;
+        console.log('map change detected', mapName);        
         break;
       }
       default:

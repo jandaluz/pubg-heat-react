@@ -53,7 +53,7 @@ const readTheCsv = (
     .attr('width', width)
     .append('g');
 
-  if (phase == 'lobby') {
+  //if (phase == 'lobby') {
     /** don't show the map if you're in game */
     IndexedDbService.getMapImgData(iDb, mapName).then(imgData => {
       var myimage = svg
@@ -62,7 +62,7 @@ const readTheCsv = (
         .attr('height', height)
         .attr('width', width);
     });
-  }
+  //}
 
   const dataUrl =
     'https://storage.googleapis.com/pubg-hackathon-published/landings/' +
